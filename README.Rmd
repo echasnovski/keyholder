@@ -1,0 +1,187 @@
+---
+output:
+  github_document:
+    html_preview: false
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+options(tibble.print_min = 3, tibble.print_max = 3)
+```
+
+[![Travis-CI Build Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder)
+[![Coverage Status](https://img.shields.io/codecov/c/github/echasnovski/keyholder/master.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.0.0.9000-green.svg?style=flat-square)](commits/master)
+
+# keyholder
+
+`keyholder` is a package for storing information (*keys*) about rows in data
+frame like objects. The common use cases are to track rows of data without
+modifying it and to backup and restore information about rows. This is done with
+creating a class __keyed_df__ which has special attribute "keys". Keys are
+updated according to changes in rows of reference data frame.
+
+`keyholder` is designed to work tightly with
+[dplyr](https://github.com/tidyverse/dplyr) package. There are methods
+implemented for all one- and two-table generics from this package that update
+keys properly.
+
+## Installation
+
+You can install `keyholder` from github with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("echasnovski/keyholder")
+```
+
+## Usage
+
+```{r setup, message = FALSE}
+library(dplyr)
+library(keyholder)
+mtcars_tbl <- mtcars %>% as_tibble()
+```
+
+### Set keys
+
+The general agreement is that keys are always converted to [tibble](https://github.com/tidyverse/tibble). In this way one can use multiple
+variables as keys by binding them.
+
+There are two ways of creating keys:
+
+- With assigning. The assigned object will be converted to tibble with
+`as_tibble()`. To make sense it should have the same number of rows as reference
+data frame. There are two functions for assigning: `keys<-` and `assign_keys`
+which are basically the same. The former use more suitable for interactive use
+and the latter - for piping with
+[magrittr](https://github.com/tidyverse/magrittr)'s pipe operator `%>%`.
+
+```{r set keys by assigning}
+mtcars_tbl_keyed <- mtcars_tbl
+keys(mtcars_tbl_keyed) <- tibble(id = 1:nrow(mtcars_tbl_keyed))
+
+mtcars_tbl %>% assign_keys(tibble(id = 1:nrow(.)))
+```
+
+- With `key_by()`. This is similar in its design to `group_by` from
+`dplyr`: it takes some columns from reference data frame and makes them keys.
+It has two important options: `.add` (whether to add specified columns to
+existing keys) and `.exclude` (whether to exclude specified columns from
+reference data frame). Grouping is ignored.
+
+```{r sey keys by key_by}
+mtcars_tbl %>% key_by(vs, am)
+
+mtcars_tbl %>% key_by(starts_with("c"))
+```
+
+To properly unkey object use `unkey()`.
+
+```{r unkey}
+mtcars_tbl_keyed <- mtcars_tbl %>% key_by(vs, am)
+
+# Good
+mtcars_tbl_keyed %>% unkey()
+
+# Bad
+attr(mtcars_tbl_keyed, "keys") <- NULL
+mtcars_tbl_keyed
+```
+
+### Get keys
+
+There are also two ways of extracting keys:
+
+- With `keys()`. This function always returns a tibble. In case of no keys it
+returns a tibble with number of rows as in reference data frame and zero
+columns.
+
+```{r get keys with keys}
+mtcars_tbl %>% keys()
+
+mtcars_tbl %>% key_by(vs, am) %>% keys()
+```
+
+- With `raw_keys()` which is just a wrapper for `attr(.tbl, "keys")`.
+
+```{r get keys with raw_keys}
+mtcars_tbl %>% raw_keys()
+
+mtcars_tbl %>% key_by(vs, am) %>% raw_keys()
+```
+
+### Manipulate keys
+
+- Remove keys with `remove_keys()`. If all keys are removed one can
+automatically unkey object by setting option `.unkey` to `TRUE`.
+
+```{r remove keys}
+mtcars_tbl %>% key_by(vs, am) %>% remove_keys(vs)
+
+mtcars_tbl %>% key_by(vs, am) %>% remove_keys(everything(), .unkey = TRUE)
+```
+
+- Restore keys with `restore_keys()`. Restoring means creating or modifying a
+column in reference data frame with values taken from keys. After restoring
+certain key one can remove it from keys by setting `.remove` to `TRUE`. There is
+also an option `.unkey` identical to one in `remove_keys()` (which is meaningful
+only in case `.remove` is `TRUE`).
+
+```{r restore keys}
+mtcars_tbl_keyed <- mtcars_tbl %>%
+  key_by(vs, am) %>%
+  mutate(vs = 1, am = 0)
+mtcars_tbl_keyed
+
+mtcars_tbl_keyed %>% restore_keys(vs)
+
+mtcars_tbl_keyed %>% restore_keys(vs, .remove = TRUE)
+
+mtcars_tbl_keyed %>% restore_keys(vs, am, .unkey = TRUE)
+
+mtcars_tbl_keyed %>% restore_keys(vs, am, .remove = TRUE, .unkey = TRUE)
+```
+
+One important feature of `restore_keys()` is that restoring keys beats 
+'not-modifying' grouping variables rule. It is made according to the ideology of
+keys: they contain information about rows and by restoring you want it to be
+available.
+
+```{r restore keys grouping}
+mtcars_tbl_keyed %>% group_by(vs, am)
+
+mtcars_tbl_keyed %>% group_by(vs, am) %>% restore_keys(vs, am)
+```
+
+- Rename keys with `rename_keys()`. Renaming is done with `rename()` from
+`dplyr` and so renaming format comes from it.
+
+```{r rename keys}
+mtcars_tbl %>% key_by(vs, am) %>% rename_keys(Vs = vs)
+```
+
+### Verbs from dplyr
+
+All one- and two-table verbs from `dplyr` (with present scoped variants) support
+`keyed_df`. If rows in reference data frame rearranged or removed the same
+operation is doen to keys. Some functions (`summarise`, `distinct` and `do`)
+unkey object.
+
+```{r dplyr verbs}
+mtcars_tbl_keyed <- mtcars_tbl %>% key_by(vs, am)
+
+mtcars_tbl_keyed %>% select(gear, mpg)
+
+mtcars_tbl_keyed %>% summarise(meanMPG = mean(mpg))
+
+mtcars_tbl_keyed %>% filter(vs == 1) %>% keys()
+
+mtcars_tbl_keyed %>% arrange_at("mpg") %>% keys()
+```
