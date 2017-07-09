@@ -1,10 +1,13 @@
 ---
-output:
-  github_document:
-    html_preview: false
+title: "Introduction to keyholder"
+author: "Evgeni Chasnovski"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to keyholder}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
@@ -14,12 +17,6 @@ knitr::opts_chunk$set(
 )
 options(tibble.print_min = 3, tibble.print_max = 3)
 ```
-
-[![Travis-CI Build Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder)
-[![Coverage Status](https://img.shields.io/codecov/c/github/echasnovski/keyholder/master.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
-[![packageversion](https://img.shields.io/badge/Package%20version-0.0.0.9000-green.svg?style=flat-square)](commits/master)
-
-# keyholder
 
 `keyholder` is a package for storing information (*keys*) about rows in data
 frame like objects. The common use cases are to track rows of data without
@@ -32,24 +29,13 @@ updated according to changes in rows of reference data frame.
 implemented for all one- and two-table generics from this package that update
 keys properly.
 
-## Installation
-
-You can install `keyholder` from github with:
-
-```{r gh-installation, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("echasnovski/keyholder")
-```
-
-## Usage
-
 ```{r setup, message = FALSE}
 library(dplyr)
 library(keyholder)
 mtcars_tbl <- mtcars %>% as_tibble()
 ```
 
-### Set keys
+## Set keys
 
 The general agreement is that keys are always converted to [tibble](https://github.com/tidyverse/tibble). In this way one can use multiple
 variables as keys by binding them.
@@ -97,7 +83,7 @@ attr(mtcars_tbl_keyed, "keys") <- NULL
 mtcars_tbl_keyed
 ```
 
-### Get keys
+## Get keys
 
 There are also two ways of extracting keys:
 
@@ -119,7 +105,7 @@ mtcars_tbl %>% raw_keys()
 mtcars_tbl %>% key_by(vs, am) %>% raw_keys()
 ```
 
-### Manipulate keys
+## Manipulate keys
 
 - Remove keys with `remove_keys()`. If all keys are removed one can
 automatically unkey object by setting option `.unkey` to `TRUE`.
@@ -169,7 +155,7 @@ mtcars_tbl_keyed %>% group_by(vs, am) %>% restore_keys(vs, am)
 mtcars_tbl %>% key_by(vs, am) %>% rename_keys(Vs = vs)
 ```
 
-### React to subset
+## React to subset
 
 A method for subsetting function `[` is implemented for `keyed_df` to react on 
 changes in rows: if rows in reference data frame are rearranged or removed the
@@ -184,7 +170,7 @@ mtcars_tbl_subset
 keys(mtcars_tbl_subset)
 ```
 
-### Verbs from dplyr
+## Verbs from dplyr
 
 All one- and two-table verbs from `dplyr` (with present scoped variants) support
 `keyed_df`. Most functions react to changes in rows as in `[` but some functions

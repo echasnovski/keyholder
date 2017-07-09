@@ -51,7 +51,7 @@ mtcars_tbl %>% assign_keys(tibble(id = 1:nrow(.)))
 #> # ... with 29 more rows
 ```
 
--   With `key_by()`. This is similar in its design to `group_by` from `dplyr`: it takes some columns from reference data frame and makes them keys. It has two important options: `.add` (whether to add specified columns to existing keys) and `.exclude` (whether to exclude specified columns from reference data frame). Grouping is ignored.
+-   With `key_by()`. This is similar in its design to `group_by` from `dplyr`: it takes some columns from reference data frame and makes keys from them. It has two important options: `.add` (whether to add specified columns to existing keys) and `.exclude` (whether to exclude specified columns from reference data frame). Grouping is ignored.
 
 ``` r
 mtcars_tbl %>% key_by(vs, am)
@@ -72,6 +72,16 @@ mtcars_tbl %>% key_by(starts_with("c"))
 #> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
 #> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
 #> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
+#> # ... with 29 more rows
+
+mtcars_tbl %>% key_by(starts_with("c"), .exclude = TRUE)
+#> # A keyed object. Keys: cyl, carb 
+#> # A tibble: 32 x 9
+#>     mpg  disp    hp  drat    wt  qsec    vs    am  gear
+#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1  21.0   160   110  3.90 2.620 16.46     0     1     4
+#> 2  21.0   160   110  3.90 2.875 17.02     0     1     4
+#> 3  22.8   108    93  3.85 2.320 18.61     1     1     4
 #> # ... with 29 more rows
 ```
 
@@ -220,7 +230,7 @@ mtcars_tbl_keyed %>% restore_keys(vs, am, .remove = TRUE, .unkey = TRUE)
 #> # ... with 29 more rows
 ```
 
-One important feature of `restore_keys()` is that restoring keys beats 'not-modifying' grouping variables rule. It is made according to the ideology of keys: they contain information about rows and by restoring you want it to be available.
+One important feature of `restore_keys()` is that restoring keys beats 'not-modifying' grouping variables rule. It is made according to the ideology of keys: they contain information about rows and by restoring you want it to be available. Groups are recomputed after restoring.
 
 ``` r
 mtcars_tbl_keyed %>% group_by(vs, am)
@@ -260,9 +270,35 @@ mtcars_tbl %>% key_by(vs, am) %>% rename_keys(Vs = vs)
 #> # ... with 29 more rows
 ```
 
+### React to subset
+
+A method for subsetting function `[` is implemented for `keyed_df` to react on changes in rows: if rows in reference data frame are rearranged or removed the same operation is done to keys.
+
+``` r
+mtcars_tbl_subset <- mtcars_tbl %>% key_by(vs, am) %>%
+  `[`(c(3, 18, 19), c(2, 8, 9))
+
+mtcars_tbl_subset
+#> # A keyed object. Keys: vs, am 
+#> # A tibble: 3 x 3
+#>     cyl    vs    am
+#>   <dbl> <dbl> <dbl>
+#> 1     4     1     1
+#> 2     4     1     1
+#> 3     4     1     1
+
+keys(mtcars_tbl_subset)
+#> # A tibble: 3 x 2
+#>      vs    am
+#>   <dbl> <dbl>
+#> 1     1     1
+#> 2     1     1
+#> 3     1     1
+```
+
 ### Verbs from dplyr
 
-All one- and two-table verbs from `dplyr` (with present scoped variants) support `keyed_df`. If rows in reference data frame rearranged or removed the same operation is doen to keys. Some functions (`summarise`, `distinct` and `do`) unkey object.
+All one- and two-table verbs from `dplyr` (with present scoped variants) support `keyed_df`. Most functions react to changes in rows as in `[` but some functions (`summarise`, `distinct` and `do`) unkey object.
 
 ``` r
 mtcars_tbl_keyed <- mtcars_tbl %>% key_by(vs, am)
