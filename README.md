@@ -300,4 +300,13 @@ mtcars_tbl_keyed %>% arrange_at("mpg") %>% keys()
 #> 2     0     0
 #> 3     0     0
 #> # ... with 29 more rows
+
+band_members %>% key_by(name) %>%
+  semi_join(band_instruments, by = "name") %>%
+  keys()
+#> # A tibble: 2 x 1
+#>    name
+#>   <chr>
+#> 1  John
+#> 2  Paul
 ```

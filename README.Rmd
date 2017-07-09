@@ -184,4 +184,8 @@ mtcars_tbl_keyed %>% summarise(meanMPG = mean(mpg))
 mtcars_tbl_keyed %>% filter(vs == 1) %>% keys()
 
 mtcars_tbl_keyed %>% arrange_at("mpg") %>% keys()
+
+band_members %>% key_by(name) %>%
+  semi_join(band_instruments, by = "name") %>%
+  keys()
 ```
