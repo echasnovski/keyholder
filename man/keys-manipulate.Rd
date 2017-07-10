@@ -4,12 +4,15 @@
 \alias{keys-manipulate}
 \alias{remove_keys}
 \alias{restore_keys}
+\alias{pull_key}
 \alias{rename_keys}
 \title{Manipulate keys}
 \usage{
 remove_keys(.tbl, ..., .unkey = FALSE)
 
 restore_keys(.tbl, ..., .remove = FALSE, .unkey = FALSE)
+
+pull_key(.tbl, var)
 
 rename_keys(.tbl, ...)
 }
@@ -22,6 +25,8 @@ in \code{\link[dplyr:select]{dplyr::select()}}.}
 \item{.unkey}{Whether to \code{\link[=unkey]{unkey()}} \code{.tbl} in case there are no keys left.}
 
 \item{.remove}{Whether to remove keys after restoring.}
+
+\item{var}{Parameter for \code{\link[dplyr:pull]{dplyr::pull()}}.}
 }
 \description{
 Functions to manipulate \link[=keys-set]{keys}.
@@ -41,6 +46,8 @@ contain information about rows and by restoring you want it to be
 available.
 }
 
+\code{pull_key()} extracts one specified column from keys with \code{\link[dplyr:pull]{dplyr::pull()}}.
+
 \code{rename_keys()} renames columns in keys using \code{\link[dplyr:rename]{dplyr::rename()}}.
 }
 \examples{
@@ -58,6 +65,9 @@ df \%>\% restore_keys(dplyr::everything(), .remove = TRUE, .unkey = TRUE)
 # Restoring on grouped data frame
 df_grouped <- df \%>\% dplyr::mutate(vs = 1) \%>\% dplyr::group_by(vs)
 df_grouped \%>\% restore_keys(dplyr::everything())
+
+# Pulling
+df \%>\% pull_key(vs)
 
 # Renaming
 df \%>\% rename_keys(Vs = vs)

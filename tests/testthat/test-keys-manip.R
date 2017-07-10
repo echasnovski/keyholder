@@ -126,6 +126,18 @@ test_that("restore_keys.default handles grouping", {
 })
 
 
+# pull_key ----------------------------------------------------------------
+test_that("pull_key works", {
+  df_keyed <- df %>% key_by(vs, am)
+
+  expect_identical(pull_key(df_keyed, vs), df[["vs"]])
+  expect_identical(pull_key(df_keyed, "am"), df[["am"]])
+  expect_identical(pull_key(df_keyed, 1), df[["vs"]])
+  expect_identical(pull_key(df_keyed, -1), df[["am"]])
+  expect_error(pull_key(df, vs), "no.*key")
+})
+
+
 # rename_keys -------------------------------------------------------------
 test_that("rename_keys works", {
   df_keyed <- df %>% key_by(vs, am)

@@ -7,6 +7,7 @@
 #'   in [dplyr::select()].
 #' @param .unkey Whether to [unkey()] `.tbl` in case there are no keys left.
 #' @param .remove Whether to remove keys after restoring.
+#' @param var Parameter for [dplyr::pull()].
 #'
 #' @details `remove_keys()` removes keys defined with `...`.
 #'
@@ -19,6 +20,8 @@
 #' grouping variables rule. It is made according to the ideology of keys: they
 #' contain information about rows and by restoring you want it to be
 #' available.
+#'
+#' `pull_key()` extracts one specified column from keys with [dplyr::pull()].
 #'
 #' `rename_keys()` renames columns in keys using [dplyr::rename()].
 #'
@@ -36,6 +39,9 @@
 #' # Restoring on grouped data frame
 #' df_grouped <- df %>% dplyr::mutate(vs = 1) %>% dplyr::group_by(vs)
 #' df_grouped %>% restore_keys(dplyr::everything())
+#'
+#' # Pulling
+#' df %>% pull_key(vs)
 #'
 #' # Renaming
 #' df %>% rename_keys(Vs = vs)
@@ -89,6 +95,16 @@ restore_keys.default <- function(.tbl, ..., .remove = FALSE, .unkey = FALSE) {
     group_by(rlang::UQS(tbl_groups)) %>%
     `class<-`(tbl_class) %>%
     set_key_cond(left_keys, .unkey)
+}
+
+#' @rdname keys-manipulate
+#' @export
+pull_key <- function(.tbl, var) {
+  if (has_keys(.tbl)) {
+    pull(keys(.tbl), rlang::UQ(rlang::enquo(var)))
+  } else {
+    stop("Input has no keys to pull from.")
+  }
 }
 
 #' @rdname keys-manipulate
