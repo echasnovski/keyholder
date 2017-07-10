@@ -11,7 +11,7 @@
 #' is returned; if taken - '.id1' is checked; if taken - '.id11' is checked and
 #' so on.
 #'
-#' `add_id()` creats a column with unique name (computed with
+#' `add_id()` creates a column with unique name (computed with
 #' `compute_id_name()`) and row numbers as values (grouping is ignored).
 #'
 #' `add_id_key()` is similar to `add_id()`: it creates a column with unique name

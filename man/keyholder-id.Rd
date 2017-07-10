@@ -29,7 +29,7 @@ element in \code{x} by the following algorithm: if '.id' is not present in \code
 is returned; if taken - '.id1' is checked; if taken - '.id11' is checked and
 so on.
 
-\code{add_id()} creats a column with unique name (computed with
+\code{add_id()} creates a column with unique name (computed with
 \code{compute_id_name()}) and row numbers as values (grouping is ignored).
 
 \code{add_id_key()} is similar to \code{add_id()}: it creates a column with unique name

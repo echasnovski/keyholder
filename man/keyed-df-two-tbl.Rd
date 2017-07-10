@@ -42,3 +42,6 @@ dplyr::band_members \%>\% key_by(band) \%>\%
   keys()
 
 }
+\seealso{
+\link[=keyed-df-one-tbl]{One-table verbs}
+}

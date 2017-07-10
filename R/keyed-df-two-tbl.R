@@ -13,6 +13,8 @@
 #'   dplyr::semi_join(dplyr::band_instruments, by = "name") %>%
 #'   keys()
 #'
+#' @seealso [One-table verbs][keyed-df-one-tbl]
+#'
 #' @name keyed-df-two-tbl
 NULL
 

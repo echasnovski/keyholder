@@ -71,3 +71,6 @@ All \link[dplyr:scoped]{scoped} variants of present functions are also supported
 mtcars \%>\% key_by(vs, am) \%>\% dplyr::mutate(gear = 1)
 
 }
+\seealso{
+\link[=keyed-df-two-tbl]{Two-table verbs}
+}

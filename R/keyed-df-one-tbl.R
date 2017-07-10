@@ -22,6 +22,8 @@
 #'
 #' @examples mtcars %>% key_by(vs, am) %>% dplyr::mutate(gear = 1)
 #'
+#' @seealso [Two-table verbs][keyed-df-two-tbl]
+#'
 #' @name keyed-df-one-tbl
 NULL
 
