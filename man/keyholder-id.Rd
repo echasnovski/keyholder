@@ -2,28 +2,34 @@
 % Please edit documentation in R/id.R
 \name{keyholder-id}
 \alias{keyholder-id}
+\alias{use_id}
+\alias{compute_id_name}
 \alias{add_id}
 \alias{key_by_id}
-\alias{compute_id_name}
 \title{Add id column and key}
 \usage{
+use_id(.tbl)
+
+compute_id_name(x)
+
 add_id(.tbl)
 
 key_by_id(.tbl, .add = FALSE, .exclude = FALSE)
-
-compute_id_name(x)
 }
 \arguments{
 \item{.tbl}{Reference data frame.}
 
-\item{.add, .exclude}{Parameters for \code{\link[=key_by]{key_by()}}.}
-
 \item{x}{Character vector of names.}
+
+\item{.add, .exclude}{Parameters for \code{\link[=key_by]{key_by()}}.}
 }
 \description{
 Functions for creating id column and key.
 }
 \details{
+\code{use_id()} \link[=keys-set]{assigns} as keys a tibble with column '.id'
+and row numbers of \code{.tbl} as values.
+
 \code{compute_id_name()} computes the name which is different from every
 element in \code{x} by the following algorithm: if '.id' is not present in \code{x} it
 is returned; if taken - '.id1' is checked; if taken - '.id11' is checked and
@@ -40,6 +46,7 @@ on \code{.tbl} column names; if \code{TRUE} then based on \code{.tbl} and its ke
 names.
 }
 \examples{
+mtcars \%>\% use_id()
 mtcars \%>\% add_id()
 mtcars \%>\% key_by_id(.exclude = TRUE)
 

@@ -1,6 +1,27 @@
 context("id")
 
 
+# use_id ------------------------------------------------------------------
+test_that("use_id works", {
+  mtcars_id <- mtcars %>% use_id()
+
+  expect_true(is_keyed_df(mtcars_id))
+  expect_identical(names(keys(mtcars_id)), ".id")
+  expect_identical(keys(mtcars_id)[[1]], seq_len(nrow(mtcars)))
+})
+
+
+# compute_id_name ---------------------------------------------------------
+test_that("compute_id_name works", {
+  expect_equal(compute_id_name(c("id", ".ID", "_id", "a.id", "..id", ".id12")),
+               ".id")
+  expect_equal(compute_id_name(c(".id")), ".id1")
+  expect_equal(compute_id_name(c(".id1")), ".id")
+  expect_equal(compute_id_name(c(".id11")), ".id")
+  expect_equal(compute_id_name(c(".id", ".id1")), ".id11")
+})
+
+
 # add_id ------------------------------------------------------------------
 test_that("add_id works", {
   input_1 <- data.frame(id = 1, .id = 2, a = "3")
@@ -116,13 +137,3 @@ test_that("key_by_id handles .add and .exclude arguments", {
   expect_identical(output_4, output_ref_4)
 })
 
-
-# compute_id_name ---------------------------------------------------------
-test_that("compute_id_name works", {
-  expect_equal(compute_id_name(c("id", ".ID", "_id", "a.id", "..id", ".id12")),
-               ".id")
-  expect_equal(compute_id_name(c(".id")), ".id1")
-  expect_equal(compute_id_name(c(".id1")), ".id")
-  expect_equal(compute_id_name(c(".id11")), ".id")
-  expect_equal(compute_id_name(c(".id", ".id1")), ".id11")
-})
