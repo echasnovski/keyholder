@@ -2,12 +2,14 @@ context("keyed-df-two-tbl")
 
 
 # Input data --------------------------------------------------------------
-band_members_df <- as.data.frame(band_members)
-band_members_tbl <- band_members
-band_members_grouped <- band_members %>% group_by(band)
-band_members_rowwise <- band_members %>% rowwise()
+band_instruments <- dplyr::band_instruments
 
-keys_band <- band_members %>% select(name)
+band_members_tbl <- dplyr::band_members
+band_members_df <- as.data.frame(band_members_tbl)
+band_members_grouped <- band_members_tbl %>% group_by(band)
+band_members_rowwise <- band_members_tbl %>% rowwise()
+
+keys_band <- band_members_tbl %>% select(name)
 assign_keys_band <- . %>% assign_keys(keys_band)
 
 
