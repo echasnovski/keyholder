@@ -3,13 +3,13 @@
 \name{keyholder-id}
 \alias{keyholder-id}
 \alias{add_id}
-\alias{add_id_key}
+\alias{key_by_id}
 \alias{compute_id_name}
 \title{Add id column and key}
 \usage{
 add_id(.tbl)
 
-add_id_key(.tbl, .add = FALSE, .exclude = FALSE)
+key_by_id(.tbl, .add = FALSE, .exclude = FALSE)
 
 compute_id_name(x)
 }
@@ -30,9 +30,10 @@ is returned; if taken - '.id1' is checked; if taken - '.id11' is checked and
 so on.
 
 \code{add_id()} creates a column with unique name (computed with
-\code{compute_id_name()}) and row numbers as values (grouping is ignored).
+\code{compute_id_name()}) and row numbers as values (grouping is ignored). After
+that puts it as first column.
 
-\code{add_id_key()} is similar to \code{add_id()}: it creates a column with unique name
+\code{key_by_id()} is similar to \code{add_id()}: it creates a column with unique name
 and row numbers as values (grouping is ignored) and calls \code{\link[=key_by]{key_by()}} function
 to use this column as key. If \code{.add} is \code{FALSE} unique name is computed based
 on \code{.tbl} column names; if \code{TRUE} then based on \code{.tbl} and its keys column
@@ -40,6 +41,6 @@ names.
 }
 \examples{
 mtcars \%>\% add_id()
-mtcars \%>\% add_id_key(.exclude = TRUE)
+mtcars \%>\% key_by_id(.exclude = TRUE)
 
 }

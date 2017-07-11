@@ -12,9 +12,10 @@
 #' so on.
 #'
 #' `add_id()` creates a column with unique name (computed with
-#' `compute_id_name()`) and row numbers as values (grouping is ignored).
+#' `compute_id_name()`) and row numbers as values (grouping is ignored). After
+#' that puts it as first column.
 #'
-#' `add_id_key()` is similar to `add_id()`: it creates a column with unique name
+#' `key_by_id()` is similar to `add_id()`: it creates a column with unique name
 #' and row numbers as values (grouping is ignored) and calls [key_by()] function
 #' to use this column as key. If `.add` is `FALSE` unique name is computed based
 #' on `.tbl` column names; if `TRUE` then based on `.tbl` and its keys column
@@ -22,7 +23,7 @@
 #'
 #' @examples
 #' mtcars %>% add_id()
-#' mtcars %>% add_id_key(.exclude = TRUE)
+#' mtcars %>% key_by_id(.exclude = TRUE)
 #'
 #' @name keyholder-id
 NULL
@@ -40,7 +41,7 @@ add_id <- function(.tbl) {
 
 #' @rdname keyholder-id
 #' @export
-add_id_key <- function(.tbl, .add = FALSE, .exclude = FALSE) {
+key_by_id <- function(.tbl, .add = FALSE, .exclude = FALSE) {
   if (.add) {
     id_name <- compute_id_name(c(colnames(.tbl), colnames(keys(.tbl))))
   } else {
