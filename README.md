@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder) [![Coverage Status](https://img.shields.io/codecov/c/github/echasnovski/keyholder/master.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master) [![packageversion](https://img.shields.io/badge/Package%20version-0.1.0-green.svg?style=flat-square)](commits/master)
+[![Travis-CI Build Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder) [![Coverage Status](https://img.shields.io/codecov/c/github/echasnovski/keyholder/master.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master) [![packageversion](https://img.shields.io/badge/Package%20version-0.1.1-green.svg?style=flat-square)](commits/master)
 
 keyholder
 =========

@@ -1,3 +1,5 @@
+# keyholder 0.1.1
+
 # keyholder 0.1.0
 
 * Implemented core package functionality: set, get and manipulate keys; methods
