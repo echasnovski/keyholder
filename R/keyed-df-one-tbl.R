@@ -15,7 +15,7 @@
 #' @details [dplyr::transmute()] is supported implicitly with [dplyr::mutate()]
 #' support.
 #'
-#' [dplyr::rowwise()] as for `dplyr` version 0.7.1 is not generic. Use
+#' [dplyr::rowwise()] is not supposed to be generic in `dplyr`. Use
 #' `rowwise.keyed_df` directly.
 #'
 #' All [scoped][dplyr::scoped] variants of present functions are also supported.
@@ -63,7 +63,7 @@ ungroup.keyed_df <- function(.tbl, ...) {
   next_method_keys(.tbl, ungroup, ...)
 }
 
-# rowwise is not generic in dplyr 0.7.1 so use this function directly.
+# rowwise is not supposed to be generic in dplyr so use this function directly
 #' @rdname keyed-df-one-tbl
 #' @export
 rowwise.keyed_df <- function(.tbl) {

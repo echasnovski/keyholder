@@ -62,7 +62,7 @@ data.frame (if any).
 \code{\link[dplyr:transmute]{dplyr::transmute()}} is supported implicitly with \code{\link[dplyr:mutate]{dplyr::mutate()}}
 support.
 
-\code{\link[dplyr:rowwise]{dplyr::rowwise()}} as for \code{dplyr} version 0.7.1 is not generic. Use
+\code{\link[dplyr:rowwise]{dplyr::rowwise()}} is not supposed to be generic in \code{dplyr}. Use
 \code{rowwise.keyed_df} directly.
 
 All \link[dplyr:scoped]{scoped} variants of present functions are also supported.
