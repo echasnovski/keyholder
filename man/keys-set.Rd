@@ -73,4 +73,6 @@ df \%>\% key_by(dplyr::everything())
 }
 \seealso{
 \link[=keys-get]{Get keys}, \link[=keys-manipulate]{Manipulate keys}
+
+\link[=key-by-scoped]{Scoped key_by()}
 }

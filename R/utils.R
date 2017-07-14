@@ -2,6 +2,14 @@
 dplyr::`%>%`
 
 
+# General utilities -------------------------------------------------------
+dots_remove_elements <- function(..., .elements = character(0)) {
+  dots <- quos(...)
+
+  dots[!(names(dots) %in% .elements)]
+}
+
+
 # Class utilities ---------------------------------------------------------
 add_class <- function(x, class) {
   class(x) <- c(class, class(x))

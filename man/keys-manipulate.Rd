@@ -75,4 +75,6 @@ df \%>\% rename_keys(Vs = vs)
 }
 \seealso{
 \link[=keys-get]{Get keys}, \link[=keys-set]{Set keys}
+
+\link[=keyholder-scoped]{Scoped functions}
 }

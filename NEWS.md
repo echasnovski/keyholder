@@ -1,7 +1,10 @@
 # keyholder 0.1.1
 
+* Implement scoped (`*_all`, `*_if`, `*_at`) functions `key_by_*`,
+`remove_keys_*`, `restore_keys_*` and `rename_keys_*`.
+
 # keyholder 0.1.0
 
-* Implemented core package functionality: set, get and manipulate keys; methods
+* Implement core package functionality: set, get and manipulate keys; methods
 for utility and subset functions, dplyr one- and two-table verbs.
-* Added a `NEWS.md` file to track changes to the package.
+* Add a `NEWS.md` file to track changes to the package.

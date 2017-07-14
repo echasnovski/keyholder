@@ -48,6 +48,8 @@
 #'
 #' @seealso [Get keys][keys-get], [Manipulate keys][keys-manipulate]
 #'
+#' [Scoped key_by()][key-by-scoped]
+#'
 #' @name keys-set
 NULL
 
@@ -81,6 +83,11 @@ key_by <- function(.tbl, ..., .add = FALSE, .exclude = FALSE) {
 
 #' @export
 key_by.default <- function(.tbl, ..., .add = FALSE, .exclude = FALSE) {
+  key_by_impl(.tbl = .tbl, .select_f = select, ...,
+              .add = .add, .exclude = .exclude)
+}
+
+key_by_impl <- function(.tbl, .select_f, ..., .add = FALSE, .exclude = FALSE) {
   if (rlang::dots_n(...) == 0) {
     return(.tbl)
   }
@@ -91,7 +98,7 @@ key_by.default <- function(.tbl, ..., .add = FALSE, .exclude = FALSE) {
     unkey() %>%
     # Keys should not be grouped
     ungroup() %>%
-    select(...) %>%
+    .select_f(...) %>%
     as_tibble()
 
   if (.add) {

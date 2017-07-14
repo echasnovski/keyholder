@@ -48,6 +48,8 @@
 #'
 #' @seealso [Get keys][keys-get], [Set keys][keys-set]
 #'
+#' [Scoped functions][keyholder-scoped]
+#'
 #' @name keys-manipulate
 
 #' @rdname keys-manipulate
@@ -58,10 +60,7 @@ remove_keys <- function(.tbl, ..., .unkey = FALSE) {
 
 #' @export
 remove_keys.default <- function(.tbl, ..., .unkey = FALSE) {
-  tbl_keys <- keys(.tbl)
-  left_keys <- diff_tbl(tbl_keys, select(tbl_keys, ...))
-
-  set_key_cond(.tbl, left_keys, .unkey)
+  remove_keys_impl(.tbl = .tbl, .select_f = select, ..., .unkey = .unkey)
 }
 
 #' @rdname keys-manipulate
@@ -72,29 +71,8 @@ restore_keys <- function(.tbl, ..., .remove = FALSE, .unkey = FALSE) {
 
 #' @export
 restore_keys.default <- function(.tbl, ..., .remove = FALSE, .unkey = FALSE) {
-  tbl_keys <- keys(.tbl)
-  tbl_class <- class(.tbl)
-
-  if (ncol(tbl_keys) == 0) {
-    return(.tbl)
-  }
-
-  restored_keys <- select(tbl_keys, ...)
-  if (.remove) {
-    left_keys <- diff_tbl(tbl_keys, restored_keys)
-  } else {
-    left_keys <- tbl_keys
-  }
-
-  # Restoring keys beats 'not-modifying' grouping variables.
-  tbl_groups <- groups(.tbl)
-
-  .tbl %>%
-    ungroup() %>%
-    assign_tbl(restored_keys) %>%
-    group_by(rlang::UQS(tbl_groups)) %>%
-    `class<-`(tbl_class) %>%
-    set_key_cond(left_keys, .unkey)
+  restore_keys_impl(.tbl = .tbl, .select_f = select, ...,
+                    .remove = .remove, .unkey = .unkey)
 }
 
 #' @rdname keys-manipulate
@@ -115,8 +93,46 @@ rename_keys <- function(.tbl, ...) {
 
 #' @export
 rename_keys.default <- function(.tbl, ...) {
+  rename_keys_impl(.tbl = .tbl, .rename_f = rename, ...)
+}
+
+remove_keys_impl <- function(.tbl, .select_f, ..., .unkey = FALSE) {
+  tbl_keys <- keys(.tbl)
+  left_keys <- diff_tbl(tbl_keys, .select_f(tbl_keys, ...))
+
+  set_key_cond(.tbl, left_keys, .unkey)
+}
+
+restore_keys_impl <- function(.tbl, .select_f, ...,
+                              .remove = FALSE, .unkey = FALSE) {
+  tbl_keys <- keys(.tbl)
+  tbl_class <- class(.tbl)
+
+  if (ncol(tbl_keys) == 0) {
+    return(.tbl)
+  }
+
+  restored_keys <- .select_f(tbl_keys, ...)
+  if (.remove) {
+    left_keys <- diff_tbl(tbl_keys, restored_keys)
+  } else {
+    left_keys <- tbl_keys
+  }
+
+  # Restoring keys beats 'not-modifying' grouping variables.
+  tbl_groups <- groups(.tbl)
+
+  .tbl %>%
+    ungroup() %>%
+    assign_tbl(restored_keys) %>%
+    group_by(rlang::UQS(tbl_groups)) %>%
+    `class<-`(tbl_class) %>%
+    set_key_cond(left_keys, .unkey)
+}
+
+rename_keys_impl <- function(.tbl, .rename_f, ...) {
   if (has_keys(.tbl)) {
-    keys(.tbl) <- rename(keys(.tbl), ...)
+    keys(.tbl) <- .rename_f(keys(.tbl), ...)
   }
 
   .tbl
