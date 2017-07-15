@@ -14,7 +14,7 @@ raw_keys(.tbl)
 has_keys(.tbl)
 }
 \arguments{
-\item{.tbl}{Reference data.frame .}
+\item{.tbl}{Reference data frame.}
 }
 \value{
 \code{keys()} always returns a \link[tibble:lst]{tibble} of keys. In case of

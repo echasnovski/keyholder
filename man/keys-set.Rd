@@ -17,7 +17,7 @@ key_by(.tbl, ..., .add = FALSE, .exclude = FALSE)
 unkey(.tbl)
 }
 \arguments{
-\item{.tbl}{Reference data.frame .}
+\item{.tbl}{Reference data frame .}
 
 \item{value}{Values of keys (converted to \link[tibble:as_tibble]{tibble}).}
 
@@ -31,9 +31,9 @@ will be overridden.}
 }
 \description{
 Key is a vector which goal is to provide information about rows in reference
-data.frame. Its length should always be equal to number of rows in
-data.frame. Keys are stored as \link[tibble:lst]{tibble} in attribute \code{"keys"}
-and so one data.frame can have multiple keys. Data.frame with keys is
+data frame. Its length should always be equal to number of rows in
+data frame. Keys are stored as \link[tibble:lst]{tibble} in attribute \code{"keys"}
+and so one data frame can have multiple keys. Data frame with keys is
 implemented as class \link[=keyed-df]{keyed_df}.
 }
 \details{

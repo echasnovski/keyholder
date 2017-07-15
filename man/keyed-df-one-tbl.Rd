@@ -56,7 +56,7 @@ Defined methods for \link{dplyr} generic single table functions. Most of them
 preserve 'keyed_df' class and 'keys' attribute (excluding \code{summarise} with
 scoped variants, \code{distinct} and \code{do} which remove them). Also these methods
 modify rows in keys according to the rows modification in reference
-data.frame (if any).
+data frame (if any).
 }
 \details{
 \code{\link[dplyr:transmute]{dplyr::transmute()}} is supported implicitly with \code{\link[dplyr:mutate]{dplyr::mutate()}}

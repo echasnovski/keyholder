@@ -16,7 +16,7 @@ key_by_at(.tbl, .vars, .funs = list(), ..., .add = FALSE,
   .exclude = FALSE)
 }
 \arguments{
-\item{.tbl}{Reference data.frame .}
+\item{.tbl}{Reference data frame .}
 
 \item{.funs}{Parameter for \link[dplyr:scoped]{scoped} functions.}
 

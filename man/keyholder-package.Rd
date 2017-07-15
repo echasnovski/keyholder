@@ -6,17 +6,17 @@
 \alias{keyholder-package}
 \title{keyholder: store data about rows}
 \description{
-\code{keyholder} offers a set of tools for storing information about rows in data
+\code{keyholder} offers a set of tools for storing information about rows of data
 frame like objects. The common use cases are:
 \itemize{
-\item track rows in data frame without changing it.
+\item track rows of data frame without changing it.
 \item store columns for future restoring in data frame.
 \item hide columns for convenient use of \link[dplyr:scoped]{dplyr}'s *_if scoped
 variants of verbs.
 }
 }
 \details{
-To learn more about \code{keyholder}, start with the vignettes:
+To learn more about \code{keyholder}, start with the vignette:
 browseVignettes(package = "keyholder")
 }
 \seealso{

@@ -14,7 +14,7 @@ remove_keys_if(.tbl, .predicate, ..., .unkey = FALSE)
 remove_keys_at(.tbl, .vars, ..., .unkey = FALSE)
 }
 \arguments{
-\item{.tbl}{Reference data.frame .}
+\item{.tbl}{Reference data frame.}
 
 \item{...}{Parameter for \link[dplyr:scoped]{scoped} functions.}
 

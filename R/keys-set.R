@@ -1,12 +1,12 @@
 #' Set keys
 #'
 #' Key is a vector which goal is to provide information about rows in reference
-#' data.frame. Its length should always be equal to number of rows in
-#' data.frame. Keys are stored as [tibble][tibble::lst] in attribute `"keys"`
-#' and so one data.frame can have multiple keys. Data.frame with keys is
+#' data frame. Its length should always be equal to number of rows in
+#' data frame. Keys are stored as [tibble][tibble::lst] in attribute `"keys"`
+#' and so one data frame can have multiple keys. Data frame with keys is
 #' implemented as class [keyed_df][keyed-df].
 #'
-#' @param .tbl Reference data.frame .
+#' @param .tbl Reference data frame .
 #' @param value Values of keys (converted to [tibble][tibble::as_tibble]).
 #' @param ... Variables to be used as keys defined in similar fashion as in
 #'   [dplyr::select()].

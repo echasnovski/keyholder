@@ -14,7 +14,7 @@ rename_keys_if(.tbl, .predicate, .funs = list(), ...)
 rename_keys_at(.tbl, .vars, .funs = list(), ...)
 }
 \arguments{
-\item{.tbl}{Reference data.frame .}
+\item{.tbl}{Reference data frame.}
 
 \item{.funs}{Parameter for \link[dplyr:scoped]{scoped} functions.}
 

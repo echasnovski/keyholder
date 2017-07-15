@@ -2,7 +2,7 @@
 #'
 #' Functions to manipulate [keys][keys-set].
 #'
-#' @param .tbl Reference data.frame .
+#' @param .tbl Reference data frame.
 #' @param ... Variables to be used for operations defined in similar fashion as
 #'   in [dplyr::select()].
 #' @param .unkey Whether to [unkey()] `.tbl` in case there are no keys left.

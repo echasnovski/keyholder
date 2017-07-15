@@ -4,7 +4,7 @@
 #' preserve 'keyed_df' class and 'keys' attribute (excluding `summarise` with
 #' scoped variants, `distinct` and `do` which remove them). Also these methods
 #' modify rows in keys according to the rows modification in reference
-#' data.frame (if any).
+#' data frame (if any).
 #'
 #' @param .tbl,.data A keyed object.
 #' @param ... Appropriate arguments for functions.

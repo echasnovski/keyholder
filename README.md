@@ -5,7 +5,7 @@
 keyholder
 =========
 
-`keyholder` is a package for storing information (*keys*) about rows in data frame like objects. The common use cases are to track rows of data without modifying it and to backup and restore information about rows. This is done with creating a class **keyed\_df** which has special attribute "keys". Keys are updated according to changes in rows of reference data frame.
+`keyholder` is a package for storing information (*keys*) about rows of data frame like objects. The common use cases are to track rows of data without modifying it and to backup and restore information about rows. This is done with creating a class **keyed\_df** which has special attribute "keys". Keys are updated according to changes in rows of reference data frame.
 
 `keyholder` is designed to work tightly with [dplyr](https://github.com/tidyverse/dplyr) package. There are methods implemented for all one- and two-table generics from this package that update keys properly.
 

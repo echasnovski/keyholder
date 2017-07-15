@@ -2,7 +2,7 @@
 #'
 #' Functions for getting information about keys.
 #'
-#' @param .tbl Reference data.frame .
+#' @param .tbl Reference data frame.
 #'
 #' @return `keys()` always returns a [tibble][tibble::lst] of keys. In case of
 #'   no keys it returns a tibble with number of rows as in `.tbl` and zero

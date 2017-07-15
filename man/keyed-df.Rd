@@ -28,7 +28,7 @@ is.keyed_df(.tbl)
 \description{
 Utility functions for keyed objects which are implemented with class
 \code{keyed_df}. Keyed object should be a data frame which inherits from
-\code{keyed_df} and contains a data.frame of \link[=keys-set]{keys} in attribute 'keys'.
+\code{keyed_df} and contains a data frame of \link[=keys-set]{keys} in attribute 'keys'.
 }
 \examples{
 is_keyed_df(mtcars)

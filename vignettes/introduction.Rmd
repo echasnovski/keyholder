@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 options(tibble.print_min = 3, tibble.print_max = 3)
 ```
 
-`keyholder` is a package for storing information (*keys*) about rows in data
+`keyholder` is a package for storing information (*keys*) about rows of data
 frame like objects. The common use cases are to track rows of data without
 modifying it and to backup and restore information about rows. This is done with
 creating a class __keyed_df__ which has special attribute "keys". Keys are

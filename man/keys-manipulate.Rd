@@ -17,7 +17,7 @@ pull_key(.tbl, var)
 rename_keys(.tbl, ...)
 }
 \arguments{
-\item{.tbl}{Reference data.frame .}
+\item{.tbl}{Reference data frame.}
 
 \item{...}{Variables to be used for operations defined in similar fashion as
 in \code{\link[dplyr:select]{dplyr::select()}}.}

@@ -17,7 +17,7 @@ restore_keys_at(.tbl, .vars, .funs = list(), ..., .remove = FALSE,
   .unkey = FALSE)
 }
 \arguments{
-\item{.tbl}{Reference data.frame .}
+\item{.tbl}{Reference data frame.}
 
 \item{.funs}{Parameter for \link[dplyr:scoped]{scoped} functions.}
 

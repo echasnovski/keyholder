@@ -2,7 +2,7 @@
 #'
 #' Utility functions for keyed objects which are implemented with class
 #' `keyed_df`. Keyed object should be a data frame which inherits from
-#' `keyed_df` and contains a data.frame of [keys][keys-set] in attribute 'keys'.
+#' `keyed_df` and contains a data frame of [keys][keys-set] in attribute 'keys'.
 #'
 #' @param .tbl Object to check.
 #' @param x Object to print or extract elements.
