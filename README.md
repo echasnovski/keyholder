@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder) [![Coverage Status](https://img.shields.io/codecov/c/github/echasnovski/keyholder/master.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master) [![packageversion](https://img.shields.io/badge/Package%20version-0.1.1-green.svg?style=flat-square)](commits/master)
+[![Travis-CI Build Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder) [![Coverage Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
 
 keyholder
 =========
@@ -22,327 +22,92 @@ devtools::install_github("echasnovski/keyholder")
 Usage
 -----
 
+`keyholder` provides a set of functions to work with keys:
+
+-   Set keys with `assign_keys()` and `key_by()`.
+-   Get all keys with `keys()`. Get one specific key with `pull_key()`.
+-   Restore information stored in certain keys with `restore_keys()` and its scoped variants (`*_all()`, `*_if()` and `*_at()`).
+-   Rename certain keys with `rename_keys()` and its scoped variants.
+-   Remove certain keys with `remove_keys()` and its scoped variants. Completely unkey object with `unkey()`.
+-   Track rows with `use_id()` and special `.id` key.
+
+For more detailed explanations and examples see package vignettes and documentation.
+
+### Common use cases
+
 ``` r
 library(dplyr)
 library(keyholder)
 mtcars_tbl <- mtcars %>% as_tibble()
 ```
 
-### Set keys
-
-The general agreement is that keys are always converted to [tibble](https://github.com/tidyverse/tibble). In this way one can use multiple variables as keys by binding them.
-
-There are two ways of creating keys:
-
--   With assigning. The assigned object will be converted to tibble with `as_tibble()`. To make sense it should have the same number of rows as reference data frame. There are two functions for assigning: `keys<-` and `assign_keys` which are basically the same. The former use more suitable for interactive use and the latter - for piping with [magrittr](https://github.com/tidyverse/magrittr)'s pipe operator `%>%`.
+-   Track rows without modifying data:
 
 ``` r
-mtcars_tbl_keyed <- mtcars_tbl
-keys(mtcars_tbl_keyed) <- tibble(id = 1:nrow(mtcars_tbl_keyed))
+mtcars_tbl_id <- mtcars_tbl %>%
+  # Creates a key '.id' with row numbers
+  use_id() %>%
+  filter(vs == 1, gear == 4)
 
-mtcars_tbl %>% assign_keys(tibble(id = 1:nrow(.)))
-#> # A keyed object. Keys: id 
-#> # A tibble: 32 x 11
+mtcars_tbl_id
+#> # A keyed object. Keys: .id 
+#> # A tibble: 10 x 11
 #>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
+#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1  22.8     4 108.0    93  3.85  2.32 18.61     1     1     4     1
+#> 2  24.4     4 146.7    62  3.69  3.19 20.00     1     0     4     2
+#> 3  22.8     4 140.8    95  3.92  3.15 22.90     1     0     4     2
+#> # ... with 7 more rows
+
+mtcars_tbl_id %>% pull_key(.id)
+#>  [1]  3  8  9 10 11 18 19 20 26 32
 ```
 
--   With `key_by()`. This is similar in its design to `group_by` from `dplyr`: it takes some columns from reference data frame and makes keys from them. It has two important options: `.add` (whether to add specified columns to existing keys) and `.exclude` (whether to exclude specified columns from reference data frame). Grouping is ignored.
-
-``` r
-mtcars_tbl %>% key_by(vs, am)
-#> # A keyed object. Keys: vs, am 
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
-
-mtcars_tbl %>% key_by(starts_with("c"))
-#> # A keyed object. Keys: cyl, carb 
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
-
-mtcars_tbl %>% key_by(starts_with("c"), .exclude = TRUE)
-#> # A keyed object. Keys: cyl, carb 
-#> # A tibble: 32 x 9
-#>     mpg  disp    hp  drat    wt  qsec    vs    am  gear
-#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0   160   110  3.90 2.620 16.46     0     1     4
-#> 2  21.0   160   110  3.90 2.875 17.02     0     1     4
-#> 3  22.8   108    93  3.85 2.320 18.61     1     1     4
-#> # ... with 29 more rows
-```
-
-To properly unkey object use `unkey()`.
-
-``` r
-mtcars_tbl_keyed <- mtcars_tbl %>% key_by(vs, am)
-
-# Good
-mtcars_tbl_keyed %>% unkey()
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
-
-# Bad
-attr(mtcars_tbl_keyed, "keys") <- NULL
-mtcars_tbl_keyed
-#> # A keyed object. Keys: there are no keys.
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
-```
-
-### Get keys
-
-There are also two ways of extracting keys:
-
--   With `keys()`. This function always returns a tibble. In case of no keys it returns a tibble with number of rows as in reference data frame and zero columns.
-
-``` r
-mtcars_tbl %>% keys()
-#> # A tibble: 32 x 0
-
-mtcars_tbl %>% key_by(vs, am) %>% keys()
-#> # A tibble: 32 x 2
-#>      vs    am
-#> * <dbl> <dbl>
-#> 1     0     1
-#> 2     0     1
-#> 3     1     1
-#> # ... with 29 more rows
-```
-
--   With `raw_keys()` which is just a wrapper for `attr(.tbl, "keys")`.
-
-``` r
-mtcars_tbl %>% raw_keys()
-#> NULL
-
-mtcars_tbl %>% key_by(vs, am) %>% raw_keys()
-#> # A tibble: 32 x 2
-#>      vs    am
-#> * <dbl> <dbl>
-#> 1     0     1
-#> 2     0     1
-#> 3     1     1
-#> # ... with 29 more rows
-```
-
-### Manipulate keys
-
--   Remove keys with `remove_keys()`. If all keys are removed one can automatically unkey object by setting option `.unkey` to `TRUE`.
-
-``` r
-mtcars_tbl %>% key_by(vs, am) %>% remove_keys(vs)
-#> # A keyed object. Keys: am 
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
-
-mtcars_tbl %>% key_by(vs, am) %>% remove_keys(everything(), .unkey = TRUE)
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
-```
-
--   Restore keys with `restore_keys()`. Restoring means creating or modifying a column in reference data frame with values taken from keys. After restoring certain key one can remove it from keys by setting `.remove` to `TRUE`. There is also an option `.unkey` identical to one in `remove_keys()` (which is meaningful only in case `.remove` is `TRUE`).
+-   Backup and restore information:
 
 ``` r
 mtcars_tbl_keyed <- mtcars_tbl %>%
-  key_by(vs, am) %>%
-  mutate(vs = 1, am = 0)
-mtcars_tbl_keyed
-#> # A keyed object. Keys: vs, am 
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     1     0     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     1     0     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     0     4     1
-#> # ... with 29 more rows
+  # Backup
+  key_by(vs, am, gear) %>%
+  # Modify
+  mutate(vs = am) %>%
+  group_by(vs) %>%
+  mutate(gear = max(gear))
 
-mtcars_tbl_keyed %>% restore_keys(vs)
-#> # A keyed object. Keys: vs, am 
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     0     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     0     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     0     4     1
-#> # ... with 29 more rows
+# Restore with recomputing groups
+mtcars_tbl_keyed %>%
+  restore_keys_all() %>%
+  all.equal(mtcars_tbl)
+#> [1] TRUE
 
-mtcars_tbl_keyed %>% restore_keys(vs, .remove = TRUE)
-#> # A keyed object. Keys: am 
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     0     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     0     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     0     4     1
-#> # ... with 29 more rows
-
-mtcars_tbl_keyed %>% restore_keys(vs, am, .unkey = TRUE)
-#> # A keyed object. Keys: vs, am 
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
-
-mtcars_tbl_keyed %>% restore_keys(vs, am, .remove = TRUE, .unkey = TRUE)
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
+# Restore with renaming
+mtcars_tbl_keyed %>%
+  restore_keys_at("vs", .funs = funs(paste0(., "_old")))
+#> # A keyed object. Keys: vs, am, gear 
+#> # A tibble: 32 x 12
+#> # Groups:   vs [2]
+#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb vs_old
+#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
+#> 1  21.0     6   160   110  3.90 2.620 16.46     1     1     5     4      0
+#> 2  21.0     6   160   110  3.90 2.875 17.02     1     1     5     4      0
+#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     5     1      1
 #> # ... with 29 more rows
 ```
 
-One important feature of `restore_keys()` is that restoring keys beats 'not-modifying' grouping variables rule. It is made according to the ideology of keys: they contain information about rows and by restoring you want it to be available. Groups are recomputed after restoring.
+-   As a special case of previous usage one can also hide columns for convenient use of `dplyr`'s \*\_if scoped variants of verbs:
 
 ``` r
-mtcars_tbl_keyed %>% group_by(vs, am)
-#> # A keyed object. Keys: vs, am 
+# Restored key goes to the end of the tibble
+mtcars_tbl %>%
+  key_by(mpg, .exclude = TRUE) %>%
+  mutate_if(is.numeric, round, digits = 0) %>%
+  restore_keys_all()
+#> # A keyed object. Keys: mpg 
 #> # A tibble: 32 x 11
-#> # Groups:   vs, am [1]
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>     cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb   mpg
 #>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     1     0     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     1     0     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     0     4     1
+#> 1     6   160   110     4     3    16     0     1     4     4  21.0
+#> 2     6   160   110     4     3    17     0     1     4     4  21.0
+#> 3     4   108    93     4     2    19     1     1     4     1  22.8
 #> # ... with 29 more rows
-
-mtcars_tbl_keyed %>% group_by(vs, am) %>% restore_keys(vs, am)
-#> # A keyed object. Keys: vs, am 
-#> # A tibble: 32 x 11
-#> # Groups:   vs, am [4]
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
-```
-
--   Rename keys with `rename_keys()`. Renaming is done with `rename()` from `dplyr` and so renaming format comes from it.
-
-``` r
-mtcars_tbl %>% key_by(vs, am) %>% rename_keys(Vs = vs)
-#> # A keyed object. Keys: Vs, am 
-#> # A tibble: 32 x 11
-#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#> * <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
-#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
-#> # ... with 29 more rows
-```
-
-### React to subset
-
-A method for subsetting function `[` is implemented for `keyed_df` to react on changes in rows: if rows in reference data frame are rearranged or removed the same operation is done to keys.
-
-``` r
-mtcars_tbl_subset <- mtcars_tbl %>% key_by(vs, am) %>%
-  `[`(c(3, 18, 19), c(2, 8, 9))
-
-mtcars_tbl_subset
-#> # A keyed object. Keys: vs, am 
-#> # A tibble: 3 x 3
-#>     cyl    vs    am
-#>   <dbl> <dbl> <dbl>
-#> 1     4     1     1
-#> 2     4     1     1
-#> 3     4     1     1
-
-keys(mtcars_tbl_subset)
-#> # A tibble: 3 x 2
-#>      vs    am
-#>   <dbl> <dbl>
-#> 1     1     1
-#> 2     1     1
-#> 3     1     1
-```
-
-### Verbs from dplyr
-
-All one- and two-table verbs from `dplyr` (with present scoped variants) support `keyed_df`. Most functions react to changes in rows as in `[` but some functions (`summarise`, `distinct` and `do`) unkey object.
-
-``` r
-mtcars_tbl_keyed <- mtcars_tbl %>% key_by(vs, am)
-
-mtcars_tbl_keyed %>% select(gear, mpg)
-#> # A keyed object. Keys: vs, am 
-#> # A tibble: 32 x 2
-#>    gear   mpg
-#> * <dbl> <dbl>
-#> 1     4  21.0
-#> 2     4  21.0
-#> 3     4  22.8
-#> # ... with 29 more rows
-
-mtcars_tbl_keyed %>% summarise(meanMPG = mean(mpg))
-#> # A tibble: 1 x 1
-#>    meanMPG
-#>      <dbl>
-#> 1 20.09062
-
-mtcars_tbl_keyed %>% filter(vs == 1) %>% keys()
-#> # A tibble: 14 x 2
-#>      vs    am
-#>   <dbl> <dbl>
-#> 1     1     1
-#> 2     1     0
-#> 3     1     0
-#> # ... with 11 more rows
-
-mtcars_tbl_keyed %>% arrange_at("mpg") %>% keys()
-#> # A tibble: 32 x 2
-#>      vs    am
-#>   <dbl> <dbl>
-#> 1     0     0
-#> 2     0     0
-#> 3     0     0
-#> # ... with 29 more rows
-
-band_members %>% key_by(name) %>%
-  semi_join(band_instruments, by = "name") %>%
-  keys()
-#> # A tibble: 2 x 1
-#>    name
-#>   <chr>
-#> 1  John
-#> 2  Paul
 ```
