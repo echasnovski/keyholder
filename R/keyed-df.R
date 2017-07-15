@@ -1,8 +1,8 @@
 #' Keyed object
 #'
 #' Utility functions for keyed objects which are implemented with class
-#' `keyed_df`. Keyed object should inherit from `keyed_df`, have rows and
-#' contain a data.frame of [keys][keys-set] in attribute 'keys'.
+#' `keyed_df`. Keyed object should be a data frame which inherits from
+#' `keyed_df` and contains a data.frame of [keys][keys-set] in attribute 'keys'.
 #'
 #' @param .tbl Object to check.
 #' @param x Object to print or extract elements.
@@ -26,6 +26,7 @@ is_keyed_df <- function(.tbl) {
   keys_attr <- attr(.tbl, "keys")
 
   inherits(.tbl, "keyed_df") &&
+    inherits(.tbl, "data.frame") &&
     inherits(keys_attr, "data.frame") &&
     isTRUE(nrow(keys_attr) == nrow(.tbl))
 }

@@ -32,6 +32,12 @@ test_that("is_keyed_df works", {
   attr(df_bad_keyed, "keys") <- keys_df
 
   expect_false(is_keyed_df(df_bad_keyed))
+
+  df_mat <- as.matrix(df)
+  class(df_mat) <- c("keyed_df", "matrix")
+  attr(df_mat, "keys") <- matrix(1:32, ncol = 1)
+
+  expect_false(is_keyed_df(df_mat))
 })
 
 
