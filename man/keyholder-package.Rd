@@ -16,8 +16,12 @@ variants of verbs.
 }
 }
 \details{
-To learn more about \code{keyholder}, start with the vignette:
-browseVignettes(package = "keyholder")
+To learn more about \code{keyholder}:
+\itemize{
+\item Browse vignettes with \code{browseVignettes(package = "keyholder")}.
+\item Look how to \link[=keys-set]{set keys}.
+\item Look at the list of \link[=keyholder-supported-funs]{supported functions}.
+}
 }
 \seealso{
 Useful links:
