@@ -30,11 +30,13 @@ These functions remove selection of keys using corresponding
 argument is removed because of its redundancy.
 }
 \examples{
-mtcars \%>\% key_by(vs, am, disp) \%>\% remove_keys_all()
-mtcars \%>\% key_by(vs, am, disp) \%>\% remove_keys_all(.unkey = TRUE)
+df <- mtcars \%>\% dplyr::as_tibble() \%>\% key_by(vs, am, disp)
+df \%>\% remove_keys_all()
 
-mtcars \%>\% key_by(vs, am, disp) \%>\% remove_keys_if(rlang::is_integerish)
+df \%>\% remove_keys_all(.unkey = TRUE)
 
-mtcars \%>\% key_by(vs, am, disp) \%>\% remove_keys_at(c("vs", "am"))
+df \%>\% remove_keys_if(rlang::is_integerish)
+
+df \%>\% remove_keys_at(c("vs", "am"))
 
 }

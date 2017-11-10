@@ -1,5 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 [![Travis-CI Build Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder) [![Coverage Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
 
 keyholder
@@ -7,7 +6,7 @@ keyholder
 
 `keyholder` is a package for storing information (*keys*) about rows of data frame like objects. The common use cases are to track rows of data without modifying it and to backup and restore information about rows. This is done with creating a class **keyed\_df** which has special attribute "keys". Keys are updated according to changes in rows of reference data frame.
 
-`keyholder` is designed to work tightly with [dplyr](https://github.com/tidyverse/dplyr) package. There are methods implemented for all one- and two-table generics from this package that update keys properly.
+`keyholder` is designed to work tightly with [dplyr](http://dplyr.tidyverse.org/) package. All its one- and two-table verbs update keys properly.
 
 Installation
 ------------
@@ -45,7 +44,7 @@ mtcars_tbl <- mtcars %>% as_tibble()
 
 ``` r
 mtcars_tbl_id <- mtcars_tbl %>%
-  # Creates a key '.id' with row numbers
+  # Creates a key '.id' with row index
   use_id() %>%
   filter(vs == 1, gear == 4)
 

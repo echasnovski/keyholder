@@ -38,26 +38,27 @@ argument can be used to rename some keys (without touching actual keys)
 before restoring.
 }
 \examples{
+df <- mtcars \%>\% dplyr::as_tibble() \%>\% key_by(vs, am, disp)
 # Just restore all keys
-mtcars \%>\% key_by(vs, am, disp) \%>\% restore_keys_all()
+df \%>\% restore_keys_all()
 
 # Restore all keys with renaming and without touching actual keys
-mtcars \%>\% key_by(vs, am, disp) \%>\% restore_keys_all(.funs = toupper)
+df \%>\% restore_keys_all(.funs = toupper)
 
 # Restore with renaming and removing
-mtcars \%>\% key_by(vs, am, disp) \%>\%
+df \%>\%
   restore_keys_all(.funs = toupper, .remove = TRUE)
 
 # Restore with renaming, removing and unkeying
-mtcars \%>\% key_by(vs, am, disp) \%>\%
+df \%>\%
   restore_keys_all(.funs = toupper, .remove = TRUE, .unkey = TRUE)
 
 # Restore with renaming keys satisfying the predicate
-mtcars \%>\% key_by(vs, am, disp) \%>\%
+df \%>\%
   restore_keys_if(rlang::is_integerish, .funs = toupper)
 
 # Restore with renaming specified keys
-mtcars \%>\% key_by(vs, am, disp) \%>\%
+df \%>\%
   restore_keys_at(c("vs", "disp"), .funs = toupper)
 
 }

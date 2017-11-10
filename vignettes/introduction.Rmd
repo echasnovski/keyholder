@@ -25,19 +25,21 @@ creating a class __keyed_df__ which has special attribute "keys". Keys are
 updated according to changes in rows of reference data frame.
 
 `keyholder` is designed to work tightly with
-[dplyr](https://github.com/tidyverse/dplyr) package. There are methods
-implemented for all one- and two-table generics from this package that update
-keys properly.
+[dplyr](https://github.com/tidyverse/dplyr) package. All its one- and two-table verbs update keys properly.
 
-```{r setup, message = FALSE}
-library(dplyr)
-library(keyholder)
+```{r setup, include = FALSE}
+library(dplyr, quietly = TRUE, warn.conflicts = FALSE)
+library(keyholder, quietly = TRUE, warn.conflicts = FALSE)
+```
+
+```{r Create basic example tibble}
 mtcars_tbl <- mtcars %>% as_tibble()
 ```
 
+
 ## Set keys
 
-The general agreement is that keys are always converted to [tibble](https://github.com/tidyverse/tibble). In this way one can use multiple
+The general agreement is that keys are always converted to [tibble](http://tibble.tidyverse.org). In this way one can use multiple
 variables as keys by binding them.
 
 There are two general ways of creating keys:
@@ -47,7 +49,7 @@ There are two general ways of creating keys:
 data frame. There are two functions for assigning: `keys<-` and `assign_keys()`
 which are basically the same. The former use more suitable for interactive use
 and the latter - for piping with
-[magrittr](https://github.com/tidyverse/magrittr)'s pipe operator `%>%`.
+[magrittr](http://magrittr.tidyverse.org)'s pipe operator `%>%`.
 
 ```{r set keys by assigning}
 mtcars_tbl_keyed <- mtcars_tbl

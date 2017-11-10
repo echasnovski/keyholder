@@ -23,7 +23,7 @@
 #' [restore_keys()]. `assign_keys` is a more suitable for piping wrapper for
 #' `keys<-`.
 #'
-#' @examples df <- mtcars
+#' @examples df <- dplyr::as_tibble(mtcars)
 #'
 #' # Value is converted to tibble
 #' keys(df) <- 1:nrow(df)
@@ -35,7 +35,9 @@
 #'
 #' # Use 'vs' and 'am' as keys
 #' df %>% key_by(vs, am)
+#'
 #' df %>% key_by(vs, am, .exclude = TRUE)
+#'
 #' df %>% key_by(vs) %>% key_by(am, .add = TRUE, .exclude = TRUE)
 #'
 #' # Override keys
@@ -44,6 +46,7 @@
 #'
 #' # Use select helpers
 #' df %>% key_by(dplyr::one_of(c("vs", "am")))
+#'
 #' df %>% key_by(dplyr::everything())
 #'
 #' @seealso [Get keys][keys-get], [Manipulate keys][keys-manipulate]

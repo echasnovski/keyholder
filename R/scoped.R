@@ -34,7 +34,9 @@ NULL
 #'
 #' @examples
 #' mtcars %>% key_by_all(.funs = toupper)
+#'
 #' mtcars %>% key_by_if(rlang::is_integerish, toupper)
+#'
 #' mtcars %>% key_by_at(c("vs", "am"), toupper)
 #'
 #' @seealso [Not scoped key_by()][keys-set]
@@ -81,12 +83,14 @@ key_by_at <- function(.tbl, .vars, .funs = list(), ...,
 #' @inheritParams keys-manipulate
 #'
 #' @examples
-#' mtcars %>% key_by(vs, am, disp) %>% remove_keys_all()
-#' mtcars %>% key_by(vs, am, disp) %>% remove_keys_all(.unkey = TRUE)
+#' df <- mtcars %>% dplyr::as_tibble() %>% key_by(vs, am, disp)
+#' df %>% remove_keys_all()
 #'
-#' mtcars %>% key_by(vs, am, disp) %>% remove_keys_if(rlang::is_integerish)
+#' df %>% remove_keys_all(.unkey = TRUE)
 #'
-#' mtcars %>% key_by(vs, am, disp) %>% remove_keys_at(c("vs", "am"))
+#' df %>% remove_keys_if(rlang::is_integerish)
+#'
+#' df %>% remove_keys_at(c("vs", "am"))
 #'
 #' @name remove-keys-scoped
 NULL
@@ -134,26 +138,27 @@ remove_keys_at <- function(.tbl, .vars, ...,
 #' @inheritParams keys-manipulate
 #'
 #' @examples
+#' df <- mtcars %>% dplyr::as_tibble() %>% key_by(vs, am, disp)
 #' # Just restore all keys
-#' mtcars %>% key_by(vs, am, disp) %>% restore_keys_all()
+#' df %>% restore_keys_all()
 #'
 #' # Restore all keys with renaming and without touching actual keys
-#' mtcars %>% key_by(vs, am, disp) %>% restore_keys_all(.funs = toupper)
+#' df %>% restore_keys_all(.funs = toupper)
 #'
 #' # Restore with renaming and removing
-#' mtcars %>% key_by(vs, am, disp) %>%
+#' df %>%
 #'   restore_keys_all(.funs = toupper, .remove = TRUE)
 #'
 #' # Restore with renaming, removing and unkeying
-#' mtcars %>% key_by(vs, am, disp) %>%
+#' df %>%
 #'   restore_keys_all(.funs = toupper, .remove = TRUE, .unkey = TRUE)
 #'
 #' # Restore with renaming keys satisfying the predicate
-#' mtcars %>% key_by(vs, am, disp) %>%
+#' df %>%
 #'   restore_keys_if(rlang::is_integerish, .funs = toupper)
 #'
 #' # Restore with renaming specified keys
-#' mtcars %>% key_by(vs, am, disp) %>%
+#' df %>%
 #'   restore_keys_at(c("vs", "disp"), .funs = toupper)
 #'
 #' @name restore-keys-scoped

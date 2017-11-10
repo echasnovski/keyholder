@@ -10,11 +10,14 @@
 #'   To know whether `.tbl` has keys use `has_keys()`.
 #'
 #' @examples keys(mtcars)
+#'
 #' raw_keys(mtcars)
+#'
 #' has_keys(mtcars)
 #'
 #' df <- key_by(mtcars, vs, am)
 #' keys(df)
+#'
 #' has_keys(df)
 #'
 #' @seealso [Set keys][keys-set], [Manipulate keys][keys-manipulate]

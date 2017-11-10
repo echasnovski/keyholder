@@ -27,11 +27,14 @@ Functions for getting information about keys.
 }
 \examples{
 keys(mtcars)
+
 raw_keys(mtcars)
+
 has_keys(mtcars)
 
 df <- key_by(mtcars, vs, am)
 keys(df)
+
 has_keys(df)
 
 }

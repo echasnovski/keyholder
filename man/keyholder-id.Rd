@@ -47,7 +47,9 @@ names.
 }
 \examples{
 mtcars \%>\% use_id()
+
 mtcars \%>\% add_id()
+
 mtcars \%>\% key_by_id(.exclude = TRUE)
 
 }

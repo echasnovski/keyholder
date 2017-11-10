@@ -4,14 +4,14 @@
 \name{keyholder-package}
 \alias{keyholder}
 \alias{keyholder-package}
-\title{keyholder: store data about rows}
+\title{keyholder: Store Data About Rows}
 \description{
 \code{keyholder} offers a set of tools for storing information about rows of data
 frame like objects. The common use cases are:
 \itemize{
-\item track rows of data frame without changing it.
-\item store columns for future restoring in data frame.
-\item hide columns for convenient use of \link[dplyr:scoped]{dplyr}'s *_if scoped
+\item Track rows of data frame without changing it.
+\item Store columns for future restoring in data frame.
+\item Hide columns for convenient use of \link[dplyr:scoped]{dplyr}'s *_if scoped
 variants of verbs.
 }
 }

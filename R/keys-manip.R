@@ -25,16 +25,25 @@
 #'
 #' `rename_keys()` renames columns in keys using [dplyr::rename()].
 #'
-#' @examples df <- mtcars %>% key_by(vs, am, .exclude = TRUE)
+#' @examples
+#' df <- mtcars %>% dplyr::as_tibble() %>%
+#'   key_by(vs, am, .exclude = TRUE)
 #' df %>% remove_keys(vs)
+#'
 #' df %>% remove_keys(dplyr::everything())
+#'
 #' df %>% remove_keys(dplyr::everything(), .unkey = TRUE)
 #'
+#'
 #' df %>% restore_keys(vs)
+#'
 #' df %>% restore_keys(vs, .remove = TRUE)
 #'
+#'
 #' df %>% restore_keys(dplyr::everything(), .remove = TRUE)
+#'
 #' df %>% restore_keys(dplyr::everything(), .remove = TRUE, .unkey = TRUE)
+#'
 #'
 #' # Restoring on grouped data frame
 #' df_grouped <- df %>% dplyr::mutate(vs = 1) %>% dplyr::group_by(vs)

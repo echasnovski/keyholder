@@ -39,7 +39,9 @@ as keys.
 }
 \examples{
 mtcars \%>\% key_by_all(.funs = toupper)
+
 mtcars \%>\% key_by_if(rlang::is_integerish, toupper)
+
 mtcars \%>\% key_by_at(c("vs", "am"), toupper)
 
 }

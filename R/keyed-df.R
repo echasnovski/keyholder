@@ -10,6 +10,7 @@
 #' @param i,j Arguments for \code{\link{[}}.
 #'
 #' @examples is_keyed_df(mtcars)
+#'
 #' mtcars %>% key_by(vs) %>% is_keyed_df
 #'
 #' # Not valid keyed_df
