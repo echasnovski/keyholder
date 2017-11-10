@@ -1,0 +1,40 @@
+.navbar-default {
+    background-color: #000080;
+    border-color: #000080;
+}
+
+pre {
+    background-color: #ffffff;
+    border-color: #000000;
+    border-width: 1px;
+    overflow-x: auto;
+}
+
+pre code {
+    overflow-wrap: normal;
+    white-space: pre;
+}
+
+.hljs-tag, .hljs-formula, .hljs-addition, .hljs-deletion {
+    background: #ffffff;
+}
+
+/* Strings */
+.hljs-string {
+  color: #008000;
+  font-weight: bold;
+}
+
+/* Comments */
+.hljs-comment {
+    color: #404080;
+    font-style: normal;
+}
+
+.hljs-fun-param {
+    color: #ff4000;
+}
+
+.hljs-pipe, .hljs-assign {
+    font-weight: bold;
+}

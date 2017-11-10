@@ -1,5 +1,6 @@
 # keyholder 0.1.1
 
+* Create pkgdown site.
 * Implement scoped (`*_all`, `*_if`, `*_at`) functions `key_by_*`,
 `remove_keys_*`, `restore_keys_*` and `rename_keys_*`.
 
