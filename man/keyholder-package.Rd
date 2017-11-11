@@ -27,8 +27,8 @@ To learn more about \code{keyholder}:
 Useful links:
 \itemize{
   \item \url{https://echasnovski.github.io/keyholder/}
-  \item \url{https://github.com/echasnovski/keyholder}
-  \item Report bugs at \url{https://github.com/echasnovski/keyholder/issues}
+  \item \url{https://github.com/echasnovski/keyholder/}
+  \item Report bugs at \url{https://github.com/echasnovski/keyholder/issues/}
 }
 
 }
