@@ -3,8 +3,10 @@ Title: Store Data About Rows
 Version: 0.1.1
 Authors@R: person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com",
     role = c("aut", "cre"))
-Description: Tools for storing information about rows of data frame like
-    objects.
+Description: Tools for keeping track of information, named "keys", about rows of
+    data frame like objects. This is done by creating special attribute "keys"
+    which is updated after every change in rows (subsetting, ordering, etc.).
+    This package is designed to work tightly with 'dplyr' package.
 Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8

@@ -1,3 +1,8 @@
+## Resubmission
+
+* Updated Description to use single quotes in "'dplyr'".
+* Updated Description in DESCRIPTION to be more informative. This gave false NOTE "Possibly mis-spelled words in DESCRIPTION: dplyr (9:51), subsetting (8:50)".
+
 ## Test environments
 * Ubuntu 16.04 LTS (local install), R 3.4.2
 * macOS 10.11 El Capitan (64-bit) (on R-hub), R 3.4.1
