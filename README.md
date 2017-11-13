@@ -11,7 +11,13 @@ keyholder
 Installation
 ------------
 
-You can install `keyholder` from github with:
+You can install current stable version from CRAN with:
+
+``` r
+install.packages("keyholder")
+```
+
+Also you can install development version from github with:
 
 ``` r
 # install.packages("devtools")

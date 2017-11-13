@@ -26,7 +26,13 @@ updated according to changes in rows of reference data frame.
 
 ## Installation
 
-You can install `keyholder` from github with:
+You can install current stable version from CRAN with:
+
+```{r cran-installation, eval = FALSE}
+install.packages("keyholder")
+```
+
+Also you can install development version from github with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
