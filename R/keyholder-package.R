@@ -13,6 +13,7 @@
 #' - Look at the list of [supported functions][keyholder-supported-funs].
 #'
 #' @import dplyr
+#' @importFrom rlang !! !!!
 "_PACKAGE"
 
 

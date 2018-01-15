@@ -32,7 +32,7 @@ get_assign_permuted_keys <- function(.tbl = mtcars_df, .f,
                                      tbl_groups = list()) {
   permutation <- .tbl %>%
     mutate(.id = 1:n()) %>%
-    group_by(rlang::UQS(tbl_groups)) %>%
+    group_by(!!! tbl_groups) %>%
     .f() %>%
     pull(.id)
 

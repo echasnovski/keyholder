@@ -64,7 +64,7 @@ test_that("remove_keys_if works", {
   output <- df_keyed %>% remove_keys_if(rlang::is_integerish)
   remove_syms <- select_if(keys(df_keyed), rlang::is_integerish) %>%
     names() %>% rlang::syms()
-  output_ref <- df_keyed %>% remove_keys(rlang::UQS(remove_syms))
+  output_ref <- df_keyed %>% remove_keys(!!! remove_syms)
 
   expect_identical(output, output_ref)
 

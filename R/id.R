@@ -63,7 +63,7 @@ add_id <- function(.tbl) {
   id_name <- compute_id_name(names(.tbl))
 
   .tbl[[id_name]] <- seq_len(nrow(.tbl))
-  .tbl <- select(.tbl, rlang::UQ(rlang::sym(id_name)), everything())
+  .tbl <- select(.tbl, !! rlang::sym(id_name), everything())
 
   .tbl
 }
@@ -78,8 +78,8 @@ key_by_id <- function(.tbl, .add = FALSE, .exclude = FALSE) {
   }
 
   .tbl[[id_name]] <- seq_len(nrow(.tbl))
-  .tbl <- select(.tbl, rlang::UQ(rlang::sym(id_name)), everything())
+  .tbl <- select(.tbl, !! rlang::sym(id_name), everything())
 
   .tbl %>%
-    key_by(rlang::UQ(rlang::sym(id_name)), .add = .add, .exclude = .exclude)
+    key_by(!! rlang::sym(id_name), .add = .add, .exclude = .exclude)
 }

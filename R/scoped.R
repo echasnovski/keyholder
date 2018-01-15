@@ -100,7 +100,7 @@ NULL
 remove_keys_all <- function(.tbl, ..., .unkey = FALSE) {
   dots <- dots_remove_elements(..., ".funs")
   remove_keys_impl(.tbl = .tbl, .select_f = select_all,
-                   .funs = list(), rlang::UQS(dots), .unkey = .unkey)
+                   .funs = list(), !!! dots, .unkey = .unkey)
 }
 
 #' @rdname remove-keys-scoped
@@ -110,7 +110,7 @@ remove_keys_if <- function(.tbl, .predicate, ...,
   dots <- dots_remove_elements(..., ".funs")
   remove_keys_impl(.tbl = .tbl, .select_f = select_if,
                    .predicate = .predicate, .funs = list(),
-                   rlang::UQS(dots),
+                   !!! dots,
                    .unkey = .unkey)
 }
 
@@ -121,7 +121,7 @@ remove_keys_at <- function(.tbl, .vars, ...,
   dots <- dots_remove_elements(..., ".funs")
   remove_keys_impl(.tbl = .tbl, .select_f = select_at,
                    .vars = .vars, .funs = list(),
-                   rlang::UQS(dots),
+                   !!! dots,
                    .unkey = .unkey)
 }
 

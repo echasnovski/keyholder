@@ -8,13 +8,13 @@ df <- mtcars
 # dots_remove_elements ----------------------------------------------------
 test_that("dots_remove_elements works", {
   input <- list(a = 1, b = "b", c = TRUE, x = quo(x), 1.3)
-  output_1 <- dots_remove_elements(rlang::UQS(input))
-  output_ref_1 <- quos(rlang::UQS(input))
+  output_1 <- dots_remove_elements(!!! input)
+  output_ref_1 <- quos(!!! input)
 
   expect_identical(output_1, output_ref_1)
 
-  output_2 <- dots_remove_elements(rlang::UQS(input), .elements = c("a", "x"))
-  output_ref_2 <- quos(rlang::UQS(input))[c(2, 3, 5)]
+  output_2 <- dots_remove_elements(!!! input, .elements = c("a", "x"))
+  output_ref_2 <- quos(!!! input)[c(2, 3, 5)]
 
   expect_identical(output_2, output_ref_2)
 })

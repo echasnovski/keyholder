@@ -88,7 +88,7 @@ restore_keys.default <- function(.tbl, ..., .remove = FALSE, .unkey = FALSE) {
 #' @export
 pull_key <- function(.tbl, var) {
   if (has_keys(.tbl)) {
-    pull(keys(.tbl), rlang::UQ(rlang::enquo(var)))
+    pull(keys(.tbl), !! rlang::enquo(var))
   } else {
     stop("Input has no keys to pull from.")
   }
@@ -134,7 +134,7 @@ restore_keys_impl <- function(.tbl, .select_f, ...,
   .tbl %>%
     ungroup() %>%
     assign_tbl(restored_keys) %>%
-    group_by(rlang::UQS(tbl_groups)) %>%
+    group_by(!!! tbl_groups) %>%
     `class<-`(tbl_class) %>%
     set_key_cond(left_keys, .unkey)
 }
