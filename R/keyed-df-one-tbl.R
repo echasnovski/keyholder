@@ -48,7 +48,7 @@ mutate.keyed_df <- function(.tbl, ...) {
 #' @rdname keyed-df-one-tbl
 #' @export
 summarise.keyed_df <- function(.tbl, ...) {
-  unkey(NextMethod())
+  summarise(unkey(.tbl), ...)
 }
 
 #' @rdname keyed-df-one-tbl
@@ -73,13 +73,13 @@ rowwise.keyed_df <- function(.tbl) {
 #' @rdname keyed-df-one-tbl
 #' @export
 distinct.keyed_df <- function(.tbl, ..., .keep_all = FALSE) {
-  unkey(NextMethod())
+  distinct(unkey(.tbl), ..., .keep_all = .keep_all)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
 do.keyed_df <- function(.tbl, ...) {
-  unkey(NextMethod())
+  do(unkey(.tbl), ...)
 }
 
 #' @rdname keyed-df-one-tbl
