@@ -261,7 +261,7 @@ test_that("group_by_all works", {
 })
 
 test_that("group_by_if works", {
-  group_by_if_f <- . %>% group_by_if(is.double, as.integer)
+  group_by_if_f <- . %>% group_by_if(is.double)
 
   expect_commute_with_keys(mtcars_df, group_by_if_f)
   expect_commute_with_keys(mtcars_tbl, group_by_if_f)
@@ -270,7 +270,7 @@ test_that("group_by_if works", {
 })
 
 test_that("group_by_at works", {
-  group_by_at_f <- . %>% group_by_at(vars(mpg, vs), as.integer)
+  group_by_at_f <- . %>% group_by_at(vars(mpg, vs))
 
   expect_commute_with_keys(mtcars_df, group_by_at_f)
   expect_commute_with_keys(mtcars_tbl, group_by_at_f)
