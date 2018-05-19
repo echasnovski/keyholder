@@ -1,4 +1,6 @@
-# keyholder 0.1.1.9000
+# keyholder 0.1.2
+
+* Reaction to `dplyr` 0.7.5: ease some tests and fix bugs in methods for `dplyr` generics.
 
 # keyholder 0.1.1
 
