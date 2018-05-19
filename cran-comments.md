@@ -25,4 +25,4 @@ pandoc: Could not fetch https://travis-ci.org/echasnovski/keyholder.svg?branch=m
 
 ## Reverse dependencies
 
-There are no reverse dependencies.
+There is one reverse dependency, 'ruler' package, which I also maintain. It will be updated shortly after this package is accepted on CRAN.
