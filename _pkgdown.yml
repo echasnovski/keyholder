@@ -2,3 +2,27 @@ title: keyholder
 template:
   params:
     bootswatch: united
+
+reference:
+  - title: Package description
+    contents:
+    - keyholder-package
+  - title: Use keys
+    contents:
+    - keyed-df
+    - keys-set
+    - keys-get
+    - keys-manipulate
+    - keyholder-id
+  - title: Operate on a selection of keys
+    contents:
+    - keyholder-scoped
+    - key-by-scoped
+    - remove-keys-scoped
+    - rename-keys-scoped
+    - restore-keys-scoped
+  - title: Supported functions
+    contents:
+    - keyholder-supported-funs
+    - keyed-df-one-tbl
+    - keyed-df-two-tbl

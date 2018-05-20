@@ -18,13 +18,30 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="keyholder: Store Data About Rows — keyholder-package" />
+
+<meta property="og:description" content="keyholder offers a set of tools for storing information about rows of data
+frame like objects. The common use cases are:
+Track rows of data frame without changing it.
+Store columns for future restoring in data frame.
+Hide columns for convenient use of dplyr's *_if scoped
+variants of verbs.
+" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,12 +64,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">keyholder</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">keyholder</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -73,7 +94,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -85,6 +106,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,12 +114,15 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>keyholder: Store Data About Rows</h1>
+    <small class="dont-index">Source: <a href='https://github.com/echasnovski/keyholder//blob/master/R/keyholder-package.R'><code>R/keyholder-package.R</code></a></small>
+    <div class="hidden name"><code>keyholder-package.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>keyholder</code> offers a set of tools for storing information about rows of data
 frame like objects. The common use cases are:</p><ul>
@@ -107,6 +132,7 @@ frame like objects. The common use cases are:</p><ul>
 variants of verbs.</p></li>
 </ul>
     
+    </div>
 
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -119,11 +145,11 @@ variants of verbs.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Useful links:</p><ul>
+    <div class='dont-index'><p>Useful links:</p><ul>
 <li><p><a href='https://echasnovski.github.io/keyholder/'>https://echasnovski.github.io/keyholder/</a></p></li>
 <li><p><a href='https://github.com/echasnovski/keyholder/'>https://github.com/echasnovski/keyholder/</a></p></li>
 <li><p>Report bugs at <a href='https://github.com/echasnovski/keyholder/issues/'>https://github.com/echasnovski/keyholder/issues/</a></p></li>
-</ul>
+</ul></div>
     
 
   </div>
@@ -150,11 +176,14 @@ variants of verbs.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -18,13 +18,21 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Function reference" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,12 +55,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">keyholder</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">keyholder</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -73,7 +85,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -85,6 +97,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,124 +105,146 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.1.1</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="key-by-scoped.html">key_by_all</a></code> <code><a href="key-by-scoped.html">key_by_if</a></code> <code><a href="key-by-scoped.html">key_by_at</a></code> </p>
-          </td>
-          <td><p>Key by selection of variables</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keyed-df-one-tbl.html">select</a></code> <code><a href="keyed-df-one-tbl.html">rename</a></code> <code><a href="keyed-df-one-tbl.html">mutate</a></code> <code><a href="keyed-df-one-tbl.html">summarise</a></code> <code><a href="keyed-df-one-tbl.html">group_by</a></code> <code><a href="keyed-df-one-tbl.html">ungroup</a></code> <code><a href="keyed-df-one-tbl.html">rowwise.keyed_df</a></code> <code><a href="keyed-df-one-tbl.html">distinct</a></code> <code><a href="keyed-df-one-tbl.html">do</a></code> <code><a href="keyed-df-one-tbl.html">arrange</a></code> <code><a href="keyed-df-one-tbl.html">filter</a></code> <code><a href="keyed-df-one-tbl.html">slice</a></code> </p>
-          </td>
-          <td><p>One-table verbs from dplyr for keyed_df</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keyed-df.html">keyed-df</a></code> </p>
-          </td>
-          <td><p>Keyed object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keyed-df-two-tbl.html">inner_join</a></code> <code><a href="keyed-df-two-tbl.html">left_join</a></code> <code><a href="keyed-df-two-tbl.html">right_join</a></code> <code><a href="keyed-df-two-tbl.html">full_join</a></code> <code><a href="keyed-df-two-tbl.html">semi_join</a></code> <code><a href="keyed-df-two-tbl.html">anti_join</a></code> </p>
-          </td>
-          <td><p>Two-table verbs from dplyr for keyed_df</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keyholder-id.html">use_id</a></code> <code><a href="keyholder-id.html">compute_id_name</a></code> <code><a href="keyholder-id.html">add_id</a></code> <code><a href="keyholder-id.html">key_by_id</a></code> </p>
-          </td>
-          <td><p>Add id column and key</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keyholder-package.html">keyholder-package</a></code> </p>
-          </td>
-          <td><p>keyholder: Store Data About Rows</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keyholder-scoped.html">keyholder-scoped</a></code> </p>
-          </td>
-          <td><p>Operate on a selection of keys</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keyholder-supported-funs.html">keyholder-supported-funs</a></code> </p>
-          </td>
-          <td><p>Supported functions</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keys-get.html">keys</a></code> <code><a href="keys-get.html">raw_keys</a></code> <code><a href="keys-get.html">has_keys</a></code> </p>
-          </td>
-          <td><p>Get keys</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keys-manipulate.html">remove_keys</a></code> <code><a href="keys-manipulate.html">restore_keys</a></code> <code><a href="keys-manipulate.html">pull_key</a></code> <code><a href="keys-manipulate.html">rename_keys</a></code> </p>
-          </td>
-          <td><p>Manipulate keys</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="keys-set.html">keys<-</a></code> <code><a href="keys-set.html">assign_keys</a></code> <code><a href="keys-set.html">key_by</a></code> <code><a href="keys-set.html">unkey</a></code> </p>
-          </td>
-          <td><p>Set keys</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="remove-keys-scoped.html">remove_keys_all</a></code> <code><a href="remove-keys-scoped.html">remove_keys_if</a></code> <code><a href="remove-keys-scoped.html">remove_keys_at</a></code> </p>
-          </td>
-          <td><p>Remove selection of keys</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="rename-keys-scoped.html">rename_keys_all</a></code> <code><a href="rename-keys-scoped.html">rename_keys_if</a></code> <code><a href="rename-keys-scoped.html">rename_keys_at</a></code> </p>
-          </td>
-          <td><p>Rename selection of keys</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="restore-keys-scoped.html">restore_keys_all</a></code> <code><a href="restore-keys-scoped.html">restore_keys_if</a></code> <code><a href="restore-keys-scoped.html">restore_keys_at</a></code> </p>
-          </td>
-          <td><p>Restore selection of keys</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-package-description" class="hasAnchor"><a href="#section-package-description" class="anchor"></a>Package description</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keyholder-package.html">keyholder-package</a></code> </p>
+        </td>
+        <td><p>keyholder: Store Data About Rows</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-use-keys" class="hasAnchor"><a href="#section-use-keys" class="anchor"></a>Use keys</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keyed-df.html">is_keyed_df()</a></code> <code><a href="keyed-df.html">is.keyed_df()</a></code> <code><a href="keyed-df.html">print(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df.html">`[`(<i>&lt;keyed_df&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Keyed object</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keys-set.html">`keys<-`()</a></code> <code><a href="keys-set.html">assign_keys()</a></code> <code><a href="keys-set.html">key_by()</a></code> <code><a href="keys-set.html">unkey()</a></code> </p>
+        </td>
+        <td><p>Set keys</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keys-get.html">keys()</a></code> <code><a href="keys-get.html">raw_keys()</a></code> <code><a href="keys-get.html">has_keys()</a></code> </p>
+        </td>
+        <td><p>Get keys</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keys-manipulate.html">remove_keys()</a></code> <code><a href="keys-manipulate.html">restore_keys()</a></code> <code><a href="keys-manipulate.html">pull_key()</a></code> <code><a href="keys-manipulate.html">rename_keys()</a></code> </p>
+        </td>
+        <td><p>Manipulate keys</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keyholder-id.html">use_id()</a></code> <code><a href="keyholder-id.html">compute_id_name()</a></code> <code><a href="keyholder-id.html">add_id()</a></code> <code><a href="keyholder-id.html">key_by_id()</a></code> </p>
+        </td>
+        <td><p>Add id column and key</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-operate-on-a-selection-of-keys" class="hasAnchor"><a href="#section-operate-on-a-selection-of-keys" class="anchor"></a>Operate on a selection of keys</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keyholder-scoped.html">keyholder-scoped</a></code> </p>
+        </td>
+        <td><p>Operate on a selection of keys</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="key-by-scoped.html">key_by_all()</a></code> <code><a href="key-by-scoped.html">key_by_if()</a></code> <code><a href="key-by-scoped.html">key_by_at()</a></code> </p>
+        </td>
+        <td><p>Key by selection of variables</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="remove-keys-scoped.html">remove_keys_all()</a></code> <code><a href="remove-keys-scoped.html">remove_keys_if()</a></code> <code><a href="remove-keys-scoped.html">remove_keys_at()</a></code> </p>
+        </td>
+        <td><p>Remove selection of keys</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="rename-keys-scoped.html">rename_keys_all()</a></code> <code><a href="rename-keys-scoped.html">rename_keys_if()</a></code> <code><a href="rename-keys-scoped.html">rename_keys_at()</a></code> </p>
+        </td>
+        <td><p>Rename selection of keys</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="restore-keys-scoped.html">restore_keys_all()</a></code> <code><a href="restore-keys-scoped.html">restore_keys_if()</a></code> <code><a href="restore-keys-scoped.html">restore_keys_at()</a></code> </p>
+        </td>
+        <td><p>Restore selection of keys</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-supported-functions" class="hasAnchor"><a href="#section-supported-functions" class="anchor"></a>Supported functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keyholder-supported-funs.html">keyholder-supported-funs</a></code> </p>
+        </td>
+        <td><p>Supported functions</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keyed-df-one-tbl.html">select(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">rename(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">mutate(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">summarise(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">group_by(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">ungroup(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">rowwise.keyed_df()</a></code> <code><a href="keyed-df-one-tbl.html">distinct(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">do(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">arrange(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">filter(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-one-tbl.html">slice(<i>&lt;keyed_df&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>One-table verbs from dplyr for keyed_df</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="keyed-df-two-tbl.html">inner_join(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-two-tbl.html">left_join(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-two-tbl.html">right_join(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-two-tbl.html">full_join(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-two-tbl.html">semi_join(<i>&lt;keyed_df&gt;</i>)</a></code> <code><a href="keyed-df-two-tbl.html">anti_join(<i>&lt;keyed_df&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Two-table verbs from dplyr for keyed_df</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-package-description">Package description</a></li>
+      <li><a href="#section-use-keys">Use keys</a></li>
+      <li><a href="#section-operate-on-a-selection-of-keys">Operate on a selection of keys</a></li>
+      <li><a href="#section-supported-functions">Supported functions</a></li>
     </ul>
   </div>
 </div>
@@ -220,11 +255,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

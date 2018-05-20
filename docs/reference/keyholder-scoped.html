@@ -18,13 +18,30 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
+<meta property="og:title" content="Operate on a selection of keys — keyholder-scoped" />
+
+<meta property="og:description" content="keyholder offers scoped variants of the
+following functions:
+key_by(). See key_by_all().
+remove_keys(). See remove_keys_all().
+restore_keys(). See restore_keys_all().
+rename_keys(). See rename_keys_all().
+" />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,12 +64,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">keyholder</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">keyholder</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -73,7 +94,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -85,6 +106,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,12 +114,15 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Operate on a selection of keys</h1>
+    <small class="dont-index">Source: <a href='https://github.com/echasnovski/keyholder//blob/master/R/scoped.R'><code>R/scoped.R</code></a></small>
+    <div class="hidden name"><code>keyholder-scoped.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><a href='keyholder-package.html'>keyholder</a> offers <a href='http://dplyr.tidyverse.org/reference/scoped.html'>scoped</a> variants of the
 following functions:</p><ul>
@@ -107,9 +132,10 @@ following functions:</p><ul>
 <li><p><code><a href='keys-manipulate.html'>rename_keys()</a></code>. See <a href='rename-keys-scoped.html'>rename_keys_all()</a>.</p></li>
 </ul>
     
+    </div>
 
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -132,8 +158,8 @@ following functions:</p><ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='keys-manipulate.html'>Not scoped manipulation functions</a>
-    <a href='keys-set.html'>Not scoped key_by()</a></p>
+    <div class='dont-index'><p><a href='keys-manipulate.html'>Not scoped manipulation functions</a></p>
+<p><a href='keys-set.html'>Not scoped key_by()</a></p></div>
     
 
   </div>
@@ -154,11 +180,14 @@ following functions:</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
