@@ -1,6 +1,6 @@
 Package: keyholder
 Title: Store Data About Rows
-Version: 0.1.2
+Version: 0.1.2.9000
 Authors@R: person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com",
     role = c("aut", "cre"))
 Description: Tools for keeping track of information, named "keys", about rows of
