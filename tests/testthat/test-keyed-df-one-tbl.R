@@ -395,8 +395,21 @@ test_that("filter.keyed_df works", {
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
-  expect_identical(output_1_f(mtcars_grouped), output_2_f(mtcars_grouped))
+  # Filtering a grouped data changes the row order (in dplyr >= 0.8.0), sot
+  # should be checked separately
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
+
+  # Checking mtcars_grouped
+  assign_perm_keys_grouped <- get_assign_permuted_keys(
+    .f = filter_f,
+    tbl_groups = groups(mtcars_grouped)
+  )
+
+  output_1_f_grouped <- . %>% filter_f() %>% assign_perm_keys_grouped()
+
+  expect_identical(
+    output_1_f_grouped(mtcars_grouped), output_2_f(mtcars_grouped)
+  )
 })
 
 test_that("filter_all works", {
@@ -433,8 +446,21 @@ test_that("filter_if works", {
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
-  expect_identical(output_1_f(mtcars_grouped), output_2_f(mtcars_grouped))
+  # Filtering a grouped data changes the row order (in dplyr >= 0.8.0), sot
+  # should be checked separately
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
+
+  # Checking mtcars_grouped
+  assign_perm_keys_grouped <- get_assign_permuted_keys(
+    .f = filter_if_f,
+    tbl_groups = groups(mtcars_grouped)
+  )
+
+  output_1_f_grouped <- . %>% filter_if_f() %>% assign_perm_keys_grouped()
+
+  expect_identical(
+    output_1_f_grouped(mtcars_grouped), output_2_f(mtcars_grouped)
+  )
 })
 
 test_that("filter_at works", {
@@ -446,8 +472,21 @@ test_that("filter_at works", {
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
-  expect_identical(output_1_f(mtcars_grouped), output_2_f(mtcars_grouped))
+  # Filtering a grouped data changes the row order (in dplyr >= 0.8.0), sot
+  # should be checked separately
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
+
+  # Checking mtcars_grouped
+  assign_perm_keys_grouped <- get_assign_permuted_keys(
+    .f = filter_at_f,
+    tbl_groups = groups(mtcars_grouped)
+  )
+
+  output_1_f_grouped <- . %>% filter_at_f() %>% assign_perm_keys_grouped()
+
+  expect_identical(
+    output_1_f_grouped(mtcars_grouped), output_2_f(mtcars_grouped)
+  )
 })
 
 
