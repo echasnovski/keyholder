@@ -27,16 +27,18 @@ expect_commute_with_keys <- function(input, .f, type = "identical") {
   expect_commute(input = input, .f1 = .f, .f2 = assign_keys_mtcars, type = type)
 }
 
-get_assign_permuted_keys <- function(.tbl = mtcars_df, .f,
-                                     base_keys = keys_mtcars,
-                                     tbl_groups = list()) {
-  permutation <- .tbl %>%
-    mutate(.id = 1:n()) %>%
-    group_by(!!! tbl_groups) %>%
-    .f() %>%
-    pull(.id)
+assigning_ref_keys <- function(.f, .tbl = mtcars_df, base_keys = keys_mtcars) {
+  .tbl[[".id"]] <- seq_len(nrow(.tbl))
+  permutation <- .f(.tbl)[[".id"]]
 
   . %>% assign_keys(base_keys[permutation, ])
+}
+
+get_if_permutation <- function(predicate, tbl, f_at, ...) {
+  pred_columns <- names(tbl)[sapply(tbl, predicate)]
+  tbl[[".id"]] <- seq_len(nrow(tbl))
+
+  f_at(tbl, vars(pred_columns), ...)[[".id"]]
 }
 
 
@@ -313,7 +315,7 @@ test_that("do works", {
 # arrange -----------------------------------------------------------------
 test_that("arrange.keyed_df works", {
   arrange_f <- . %>% arrange(vs, desc(mpg))
-  assign_perm_keys <- get_assign_permuted_keys(.f = arrange_f)
+  assign_perm_keys <- assigning_ref_keys(arrange_f)
 
   output_1_f <- . %>% arrange_f() %>% assign_perm_keys()
   output_2_f <- . %>% assign_keys_mtcars() %>% arrange_f()
@@ -324,9 +326,8 @@ test_that("arrange.keyed_df works", {
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
 
   arrange_f_by_group <- . %>% arrange(vs, desc(mpg), .by_group = TRUE)
-  assign_perm_keys_by_group <- get_assign_permuted_keys(
-    .f = arrange_f_by_group,
-    tbl_groups = groups(mtcars_grouped)
+  assign_perm_keys_by_group <- assigning_ref_keys(
+    arrange_f_by_group, mtcars_grouped
   )
 
   output_1_f_by_group <- . %>% arrange_f_by_group() %>%
@@ -341,46 +342,52 @@ test_that("arrange.keyed_df works", {
 
 test_that("arrange_all works", {
   arrange_all_f <- . %>% arrange_all(desc)
-  assign_perm_keys <- get_assign_permuted_keys(.f = arrange_all_f)
+  assign_perm_keys <- assigning_ref_keys(arrange_all_f)
+  assign_perm_keys_gr <- assigning_ref_keys(arrange_all_f, mtcars_grouped)
 
   output_1_f <- . %>% arrange_all_f() %>% assign_perm_keys()
+  output_1_f_gr <- . %>% arrange_all_f() %>% assign_perm_keys_gr()
   output_2_f <- . %>% assign_keys_mtcars() %>% arrange_all_f()
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
-  expect_identical(output_1_f(mtcars_grouped), output_2_f(mtcars_grouped))
+  expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
 })
 
 test_that("arrange_if works", {
   # This is also a test for 'invisibility' of .id column
   arrange_if_f <- . %>% arrange_if(rlang::is_integerish)
-  integerish_cols <- names(mtcars_df)[sapply(mtcars_df, rlang::is_integerish)]
-  permutation <- mtcars_df %>%
-    mutate(.id = 1:n()) %>%
-    arrange_at(vars(integerish_cols)) %>%
-    pull(.id)
+
+  permutation <- get_if_permutation(rlang::is_integerish, mtcars_df, arrange_at)
   assign_perm_keys <- . %>% assign_keys(keys_mtcars[permutation, ])
+  permutation_gr <- get_if_permutation(
+    rlang::is_integerish, mtcars_grouped, arrange_at
+  )
+  assign_perm_keys_gr <- . %>% assign_keys(keys_mtcars[permutation_gr, ])
 
   output_1_f <- . %>% arrange_if_f() %>% assign_perm_keys()
+  output_1_f_gr <- . %>% arrange_if_f() %>% assign_perm_keys_gr()
   output_2_f <- . %>% assign_keys_mtcars() %>% arrange_if_f()
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
-  expect_identical(output_1_f(mtcars_grouped), output_2_f(mtcars_grouped))
+  expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
 })
 
 test_that("arrange_at works", {
   arrange_at_f <- . %>% arrange_at(vars("disp", "qsec"))
-  assign_perm_keys <- get_assign_permuted_keys(.f = arrange_at_f)
+  assign_perm_keys <- assigning_ref_keys(arrange_at_f)
+  assign_perm_keys_gr <- assigning_ref_keys(arrange_at_f, mtcars_grouped)
 
   output_1_f <- . %>% arrange_at_f() %>% assign_perm_keys()
+  output_1_f_gr <- . %>% arrange_at_f() %>% assign_perm_keys_gr()
   output_2_f <- . %>% assign_keys_mtcars() %>% arrange_at_f()
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
-  expect_identical(output_1_f(mtcars_grouped), output_2_f(mtcars_grouped))
+  expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
 })
 
@@ -388,131 +395,92 @@ test_that("arrange_at works", {
 # filter ------------------------------------------------------------------
 test_that("filter.keyed_df works", {
   filter_f <- . %>% filter(gear == 4, am == 1)
-  assign_perm_keys <- get_assign_permuted_keys(.f = filter_f)
+  assign_perm_keys <- assigning_ref_keys(filter_f)
+  assign_perm_keys_gr <- assigning_ref_keys(filter_f, mtcars_grouped)
 
   output_1_f <- . %>% filter_f() %>% assign_perm_keys()
+  output_1_f_gr <- . %>% filter_f() %>% assign_perm_keys_gr()
   output_2_f <- . %>% assign_keys_mtcars() %>% filter_f()
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
-  # Filtering a grouped data changes the row order (in dplyr >= 0.8.0), sot
-  # should be checked separately
+  # Filtering a grouped data changes the row order (in dplyr >= 0.8.0)
+  expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
-
-  # Checking mtcars_grouped
-  assign_perm_keys_grouped <- get_assign_permuted_keys(
-    .f = filter_f,
-    tbl_groups = groups(mtcars_grouped)
-  )
-
-  output_1_f_grouped <- . %>% filter_f() %>% assign_perm_keys_grouped()
-
-  expect_identical(
-    output_1_f_grouped(mtcars_grouped), output_2_f(mtcars_grouped)
-  )
 })
 
 test_that("filter_all works", {
   filter_all_f <- . %>% filter_all(all_vars(. > 0))
-  assign_perm_keys <- get_assign_permuted_keys(.f = filter_all_f)
+  assign_perm_keys <- assigning_ref_keys(filter_all_f)
+  assign_perm_keys_gr <- assigning_ref_keys(filter_all_f, mtcars_grouped)
 
   output_1_f <- . %>% filter_all_f() %>% assign_perm_keys()
+  output_1_f_gr <- . %>% filter_all_f() %>% assign_perm_keys_gr()
   output_2_f <- . %>% assign_keys_mtcars() %>% filter_all_f()
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
   # filter_all removes grouping variables before applying filter so the result
   # is different for mtcars_grouped
+  expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
-
-  # Checking mtcars_grouped
-  assign_perm_keys_grouped <- get_assign_permuted_keys(
-    .f = filter_all_f,
-    tbl_groups = groups(mtcars_grouped)
-  )
-
-  output_1_f_grouped <- . %>% filter_all_f() %>% assign_perm_keys_grouped()
-
-  expect_identical(output_1_f_grouped(mtcars_grouped),
-                   output_2_f(mtcars_grouped))
 })
 
 test_that("filter_if works", {
   filter_if_f <- . %>% filter_if(rlang::is_integerish, all_vars(. < 100))
-  assign_perm_keys <- get_assign_permuted_keys(.f = filter_if_f)
+
+  permutation <- get_if_permutation(
+    rlang::is_integerish, mtcars_df, filter_at, all_vars(. < 100)
+  )
+  assign_perm_keys <- . %>% assign_keys(keys_mtcars[permutation, ])
+  permutation_gr <- get_if_permutation(
+    rlang::is_integerish, mtcars_grouped, filter_at, all_vars(. < 100)
+  )
+  assign_perm_keys_gr <- . %>% assign_keys(keys_mtcars[permutation_gr, ])
 
   output_1_f <- . %>% filter_if_f() %>% assign_perm_keys()
+  output_1_f_gr <- . %>% filter_if_f() %>% assign_perm_keys_gr()
   output_2_f <- . %>% assign_keys_mtcars() %>% filter_if_f()
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
-  # Filtering a grouped data changes the row order (in dplyr >= 0.8.0), sot
-  # should be checked separately
+  # Filtering a grouped data changes the row order (in dplyr >= 0.8.0)
+  expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
-
-  # Checking mtcars_grouped
-  assign_perm_keys_grouped <- get_assign_permuted_keys(
-    .f = filter_if_f,
-    tbl_groups = groups(mtcars_grouped)
-  )
-
-  output_1_f_grouped <- . %>% filter_if_f() %>% assign_perm_keys_grouped()
-
-  expect_identical(
-    output_1_f_grouped(mtcars_grouped), output_2_f(mtcars_grouped)
-  )
 })
 
 test_that("filter_at works", {
   filter_at_f <- . %>% filter_at(vars("mpg", "hp"), all_vars(. > 15))
-  assign_perm_keys <- get_assign_permuted_keys(.f = filter_at_f)
+  assign_perm_keys <- assigning_ref_keys(filter_at_f)
+  assign_perm_keys_gr <- assigning_ref_keys(filter_at_f, mtcars_grouped)
 
   output_1_f <- . %>% filter_at_f() %>% assign_perm_keys()
+  output_1_f_gr <- . %>% filter_at_f() %>% assign_perm_keys_gr()
   output_2_f <- . %>% assign_keys_mtcars() %>% filter_at_f()
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
-  # Filtering a grouped data changes the row order (in dplyr >= 0.8.0), sot
-  # should be checked separately
+  # Filtering a grouped data changes the row order (in dplyr >= 0.8.0)
+  expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
-
-  # Checking mtcars_grouped
-  assign_perm_keys_grouped <- get_assign_permuted_keys(
-    .f = filter_at_f,
-    tbl_groups = groups(mtcars_grouped)
-  )
-
-  output_1_f_grouped <- . %>% filter_at_f() %>% assign_perm_keys_grouped()
-
-  expect_identical(
-    output_1_f_grouped(mtcars_grouped), output_2_f(mtcars_grouped)
-  )
 })
 
 
 # slice -------------------------------------------------------------------
-test_that("slice.keyed_d works", {
+test_that("slice.keyed_df works", {
   slice_f <- . %>% slice(c(4, 5, 31, 3, 3, 14, 18, 30, 31, 44))
-  assign_perm_keys <- get_assign_permuted_keys(.f = slice_f)
+  assign_perm_keys <- assigning_ref_keys(slice_f)
+  assign_perm_keys_gr <- assigning_ref_keys(slice_f, mtcars_grouped)
 
   output_1_f <- . %>% slice_f() %>% assign_perm_keys()
+  output_1_f_gr <- . %>% slice_f() %>% assign_perm_keys_gr()
   output_2_f <- . %>% assign_keys_mtcars() %>% slice_f()
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
   # Slicing grouped_df is done differently
+  expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
   expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
-
-  # Checking mtcars_grouped
-  assign_perm_keys_grouped <- get_assign_permuted_keys(
-    .f = slice_f,
-    tbl_groups = groups(mtcars_grouped)
-  )
-
-  output_1_f_grouped <- . %>% slice_f() %>% assign_perm_keys_grouped()
-
-  expect_identical(output_1_f_grouped(mtcars_grouped),
-                   output_2_f(mtcars_grouped))
 })
 
 
