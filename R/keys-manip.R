@@ -128,13 +128,19 @@ restore_keys_impl <- function(.tbl, .select_f, ...,
     left_keys <- tbl_keys
   }
 
-  # Restoring keys beats 'not-modifying' grouping variables.
-  tbl_groups <- groups(.tbl)
+  if (dplyr::is_grouped_df(.tbl)) {
+    # Restoring keys beats 'not-modifying' grouping variables.
+    tbl_groups <- groups(.tbl)
 
-  .tbl %>%
-    ungroup() %>%
-    assign_tbl(restored_keys) %>%
-    group_by(!!! tbl_groups) %>%
+    res <- .tbl %>%
+      ungroup() %>%
+      assign_tbl(restored_keys) %>%
+      group_by(!!!tbl_groups)
+  } else {
+    res <- .tbl %>% assign_tbl(restored_keys)
+  }
+
+  res %>%
     `class<-`(tbl_class) %>%
     set_key_cond(left_keys, .unkey)
 }
