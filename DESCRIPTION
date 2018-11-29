@@ -13,10 +13,11 @@ Encoding: UTF-8
 LazyData: true
 URL: https://echasnovski.github.io/keyholder/, https://github.com/echasnovski/keyholder/
 BugReports: https://github.com/echasnovski/keyholder/issues/
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Imports: dplyr (>= 0.7.0),
-    rlang (>= 0.1)
+    rlang (>= 0.1),
+    tibble
 Suggests: knitr,
     rmarkdown,
     testthat,
