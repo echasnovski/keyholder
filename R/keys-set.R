@@ -59,7 +59,15 @@ NULL
 #' @rdname keys-set
 #' @export
 `keys<-` <- function(.tbl, value) {
-  value <- as_tibble(value)
+  # In {tibble} > 1.4.2 using `as_tibble()` with vector is soft deprecated
+  if ((utils::packageVersion("tibble") > "1.4.2") && is.vector(value)) {
+    # Remove lines from coverage until {tibble} 2.0.0 is on CRAN
+    #nocov start
+    value <- tibble::enframe(value, name = NULL, value = "value")
+    #nocov end
+  } else {
+    value <- as_tibble(value)
+  }
 
   if (!isTRUE(nrow(value) == nrow(.tbl))) {
     stop("Keys object should have the same number of rows as data.")

@@ -17,7 +17,8 @@ RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Imports: dplyr (>= 0.7.0),
     rlang (>= 0.1),
-    tibble
+    tibble,
+    utils
 Suggests: knitr,
     rmarkdown,
     testthat,
