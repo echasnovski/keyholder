@@ -1,26 +1,35 @@
 Package: keyholder
 Title: Store Data About Rows
 Version: 0.1.3.9000
-Authors@R: person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com",
-    role = c("aut", "cre"))
-Description: Tools for keeping track of information, named "keys", about rows of
-    data frame like objects. This is done by creating special attribute "keys"
-    which is updated after every change in rows (subsetting, ordering, etc.).
-    This package is designed to work tightly with 'dplyr' package.
-Depends: R (>= 3.4.0)
+Authors@R: 
+    person(given = "Evgeni",
+           family = "Chasnovski",
+           role = c("aut", "cre"),
+           email = "evgeni.chasnovski@gmail.com")
+Description: Tools for keeping track of information, named
+    "keys", about rows of data frame like objects. This is done by
+    creating special attribute "keys" which is updated after every change
+    in rows (subsetting, ordering, etc.).  This package is designed to
+    work tightly with 'dplyr' package.
 License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
-URL: https://echasnovski.github.io/keyholder/, https://github.com/echasnovski/keyholder/
+URL: https://echasnovski.github.io/keyholder/,
+    https://github.com/echasnovski/keyholder/
 BugReports: https://github.com/echasnovski/keyholder/issues/
-RoxygenNote: 6.1.1
-Roxygen: list(markdown = TRUE)
-Imports: dplyr (>= 0.7.0),
+Depends: 
+    R (>= 3.4.0)
+Imports: 
+    dplyr (>= 0.7.0),
     rlang (>= 0.1),
     tibble,
     utils
-Suggests: knitr,
+Suggests: 
+    covr,
+    knitr,
     rmarkdown,
-    testthat,
-    covr
-VignetteBuilder: knitr
+    testthat
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
