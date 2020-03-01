@@ -41,10 +41,10 @@ implemented as class \link[=keyed-df]{keyed_df}.
 and names of some added keys match the names of existing keys the new ones
 will override the old ones.
 
-Value for \code{keys<-} should not be \code{NULL} because it is converted to tibble
+Value for \verb{keys<-} should not be \code{NULL} because it is converted to tibble
 with zero rows. To remove keys use \code{unkey()}, \code{\link[=remove_keys]{remove_keys()}} or
 \code{\link[=restore_keys]{restore_keys()}}. \code{assign_keys} is a more suitable for piping wrapper for
-\code{keys<-}.
+\verb{keys<-}.
 }
 \examples{
 df <- dplyr::as_tibble(mtcars)

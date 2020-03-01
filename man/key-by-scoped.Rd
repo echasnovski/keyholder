@@ -12,8 +12,7 @@ key_by_all(.tbl, .funs = list(), ..., .add = FALSE, .exclude = FALSE)
 key_by_if(.tbl, .predicate, .funs = list(), ..., .add = FALSE,
   .exclude = FALSE)
 
-key_by_at(.tbl, .vars, .funs = list(), ..., .add = FALSE,
-  .exclude = FALSE)
+key_by_at(.tbl, .vars, .funs = list(), ..., .add = FALSE, .exclude = FALSE)
 }
 \arguments{
 \item{.tbl}{Reference data frame .}
