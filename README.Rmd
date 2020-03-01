@@ -94,7 +94,7 @@ mtcars_tbl_keyed %>%
 
 # Restore with renaming
 mtcars_tbl_keyed %>%
-  restore_keys_at("vs", .funs = funs(paste0(., "_old")))
+  restore_keys_at("vs", .funs = list(~ paste0(., "_old")))
 ```
 
 - As a special case of previous usage one can also hide columns for convenient

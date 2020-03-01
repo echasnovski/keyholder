@@ -209,7 +209,7 @@ test_that("summarise.keyed_df works", {
 })
 
 test_that("summarise_all works", {
-  summarise_all_f <- . %>% summarise_all(funs(n()))
+  summarise_all_f <- . %>% summarise_all(list(~ n()))
 
   expect_false(mtcars_df %>% key_by(vs) %>% summarise_all_f() %>% is_keyed_df())
   expect_false(mtcars_tbl %>% key_by(vs) %>% summarise_all_f() %>%
