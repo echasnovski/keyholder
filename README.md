@@ -1,15 +1,23 @@
 
-[![Travis-CI Build Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder) [![Coverage Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
+[![Travis-CI Build
+Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder)
+[![Coverage
+Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
 
-keyholder
-=========
+# keyholder
 
-`keyholder` is a package for storing information (*keys*) about rows of data frame like objects. The common use cases are to track rows of data without modifying it and to backup and restore information about rows. This is done with creating a class **keyed\_df** which has special attribute "keys". Keys are updated according to changes in rows of reference data frame.
+`keyholder` is a package for storing information (*keys*) about rows of
+data frame like objects. The common use cases are to track rows of data
+without modifying it and to backup and restore information about rows.
+This is done with creating a class **keyed\_df** which has special
+attribute “keys”. Keys are updated according to changes in rows of
+reference data frame.
 
-`keyholder` is designed to work tightly with [dplyr](http://dplyr.tidyverse.org/) package. All its one- and two-table verbs update keys properly.
+`keyholder` is designed to work tightly with
+[dplyr](http://dplyr.tidyverse.org/) package. All its one- and two-table
+verbs update keys properly.
 
-Installation
-------------
+## Installation
 
 You can install current stable version from CRAN with:
 
@@ -24,19 +32,21 @@ Also you can install development version from github with:
 devtools::install_github("echasnovski/keyholder")
 ```
 
-Usage
------
+## Usage
 
 `keyholder` provides a set of functions to work with keys:
 
--   Set keys with `assign_keys()` and `key_by()`.
--   Get all keys with `keys()`. Get one specific key with `pull_key()`.
--   Restore information stored in certain keys with `restore_keys()` and its scoped variants (`*_all()`, `*_if()` and `*_at()`).
--   Rename certain keys with `rename_keys()` and its scoped variants.
--   Remove certain keys with `remove_keys()` and its scoped variants. Completely unkey object with `unkey()`.
--   Track rows with `use_id()` and special `.id` key.
+  - Set keys with `assign_keys()` and `key_by()`.
+  - Get all keys with `keys()`. Get one specific key with `pull_key()`.
+  - Restore information stored in certain keys with `restore_keys()` and
+    its scoped variants (`*_all()`, `*_if()` and `*_at()`).
+  - Rename certain keys with `rename_keys()` and its scoped variants.
+  - Remove certain keys with `remove_keys()` and its scoped variants.
+    Completely unkey object with `unkey()`.
+  - Track rows with `use_id()` and special `.id` key.
 
-For more detailed explanations and examples see package vignettes and documentation.
+For more detailed explanations and examples see package vignettes and
+documentation.
 
 ### Common use cases
 
@@ -46,7 +56,9 @@ library(keyholder)
 mtcars_tbl <- mtcars %>% as_tibble()
 ```
 
--   Track rows without modifying data:
+  - Track rows without modifying data:
+
+<!-- end list -->
 
 ``` r
 mtcars_tbl_id <- mtcars_tbl %>%
@@ -59,16 +71,18 @@ mtcars_tbl_id
 #> # A tibble: 10 x 11
 #>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 #>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1  22.8     4 108.0    93  3.85  2.32 18.61     1     1     4     1
-#> 2  24.4     4 146.7    62  3.69  3.19 20.00     1     0     4     2
-#> 3  22.8     4 140.8    95  3.92  3.15 22.90     1     0     4     2
-#> # ... with 7 more rows
+#> 1  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+#> 2  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+#> 3  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+#> # … with 7 more rows
 
 mtcars_tbl_id %>% pull_key(.id)
 #>  [1]  3  8  9 10 11 18 19 20 26 32
 ```
 
--   Backup and restore information:
+  - Backup and restore information:
+
+<!-- end list -->
 
 ``` r
 mtcars_tbl_keyed <- mtcars_tbl %>%
@@ -88,18 +102,33 @@ mtcars_tbl_keyed %>%
 # Restore with renaming
 mtcars_tbl_keyed %>%
   restore_keys_at("vs", .funs = funs(paste0(., "_old")))
+#> Warning: funs() is soft deprecated as of dplyr 0.8.0
+#> Please use a list of either functions or lambdas: 
+#> 
+#>   # Simple named list: 
+#>   list(mean = mean, median = median)
+#> 
+#>   # Auto named with `tibble::lst()`: 
+#>   tibble::lst(mean, median)
+#> 
+#>   # Using lambdas
+#>   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+#> This warning is displayed once per session.
 #> # A keyed object. Keys: vs, am, gear 
 #> # A tibble: 32 x 12
 #> # Groups:   vs [2]
 #>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb vs_old
 #>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl>
-#> 1  21.0     6   160   110  3.90 2.620 16.46     1     1     5     4      0
-#> 2  21.0     6   160   110  3.90 2.875 17.02     1     1     5     4      0
-#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     5     1      1
-#> # ... with 29 more rows
+#> 1  21       6   160   110  3.9   2.62  16.5     1     1     5     4      0
+#> 2  21       6   160   110  3.9   2.88  17.0     1     1     5     4      0
+#> 3  22.8     4   108    93  3.85  2.32  18.6     1     1     5     1      1
+#> # … with 29 more rows
 ```
 
--   As a special case of previous usage one can also hide columns for convenient use of `dplyr`'s \*\_if scoped variants of verbs:
+  - As a special case of previous usage one can also hide columns for
+    convenient use of `dplyr`’s \*\_if scoped variants of verbs:
+
+<!-- end list -->
 
 ``` r
 # Restored key goes to the end of the tibble
@@ -111,8 +140,8 @@ mtcars_tbl %>%
 #> # A tibble: 32 x 11
 #>     cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb   mpg
 #>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1     6   160   110     4     3    16     0     1     4     4  21.0
-#> 2     6   160   110     4     3    17     0     1     4     4  21.0
+#> 1     6   160   110     4     3    16     0     1     4     4  21  
+#> 2     6   160   110     4     3    17     0     1     4     4  21  
 #> 3     4   108    93     4     2    19     1     1     4     1  22.8
-#> # ... with 29 more rows
+#> # … with 29 more rows
 ```
