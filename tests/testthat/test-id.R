@@ -43,7 +43,10 @@ test_that("add_id works on grouped_df", {
   output_ref_1 <- select(output_ref_1, .id, everything()) %>%
     group_by(vs, am)
 
-  expect_identical(output_1, output_ref_1)
+  # In case of raw data frame input to `group_by()`, results may not be
+  # identical due to strict behavior of 'tibble' with respect to row names
+  expect_equal(output_1[[".id"]], output_ref_1[[".id"]])
+  expect_equal(colnames(output_1), colnames(output_ref_1))
 
   input_2 <- as_tibble(mtcars)
   output_2 <- input_2 %>% group_by(vs, am) %>% add_id()
@@ -82,7 +85,12 @@ test_that("key_by_id works on grouped_df", {
     key_by(.id) %>%
     group_by(vs, am)
 
-  expect_identical(output_1, output_ref_1)
+  # In case of raw data frame input to `group_by()`, results may not be
+  # identical due to strict behavior of 'tibble' with respect to row names
+  expect_equal(output_1[[".id"]], output_ref_1[[".id"]])
+  expect_equal(colnames(output_1), colnames(output_ref_1))
+  expect_equal(keys(output_1), keys(output_ref_1))
+
 
   input_2 <- as_tibble(mtcars)
   output_2 <- input_2 %>% group_by(vs, am) %>% key_by_id()
@@ -105,7 +113,11 @@ test_that("key_by_id works on grouped_df", {
     group_by(vs, am) %>%
     key_by(.id, .exclude = FALSE)
 
-  expect_identical(output_3, output_ref_3)
+  # In case of raw data frame input to `group_by()`, results may not be
+  # identical due to strict behavior of 'tibble' with respect to row names
+  expect_equal(output_1[[".id"]], output_ref_1[[".id"]])
+  expect_equal(colnames(output_1), colnames(output_ref_1))
+  expect_equal(keys(output_1), keys(output_ref_1))
 })
 
 test_that("key_by_id handles .add and .exclude arguments", {
