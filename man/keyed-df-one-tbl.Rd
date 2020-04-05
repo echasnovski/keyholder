@@ -24,7 +24,7 @@
 
 \method{summarise}{keyed_df}(.tbl, ...)
 
-\method{group_by}{keyed_df}(.tbl, ..., add = FALSE)
+\method{group_by}{keyed_df}(.tbl, ...)
 
 \method{ungroup}{keyed_df}(.tbl, ...)
 
@@ -44,8 +44,6 @@ rowwise.keyed_df(.tbl)
 \item{.tbl, .data}{A keyed object.}
 
 \item{...}{Appropriate arguments for functions.}
-
-\item{add}{Parameter for \link[dplyr:group_by]{dplyr::group_by}.}
 
 \item{.keep_all}{Parameter for \link[dplyr:distinct]{dplyr::distinct}.}
 

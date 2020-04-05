@@ -8,7 +8,6 @@
 #'
 #' @param .tbl,.data A keyed object.
 #' @param ... Appropriate arguments for functions.
-#' @param add Parameter for [dplyr::group_by].
 #' @param .keep_all Parameter for [dplyr::distinct].
 #' @param .by_group Parameter for [dplyr::arrange].
 #'
@@ -53,8 +52,8 @@ summarise.keyed_df <- function(.tbl, ...) {
 
 #' @rdname keyed-df-one-tbl
 #' @export
-group_by.keyed_df <- function(.tbl, ..., add = FALSE) {
-  next_method_keys(.tbl, group_by, ..., add = add)
+group_by.keyed_df <- function(.tbl, ...) {
+  next_method_keys(.tbl, group_by, ...)
 }
 
 #' @rdname keyed-df-one-tbl
@@ -121,8 +120,12 @@ next_method_keys_track <- function(.tbl, .f, ...) {
   y[[id_name]] <- 1:nrow(y)
   res <- .f(y, ...)
 
-  keys(res) <- keys(.tbl)[res[[id_name]], ]
+  # Removing column with name in `id_name` before assigning keys is important
+  # because `[[` operation on `res` might remove `keyed_df` class that should be
+  # added during `keys<-()` execution.
+  id_vals <- res[[id_name]]
   res[[id_name]] <- NULL
+  keys(res) <- keys(.tbl)[id_vals, ]
 
   res
 }

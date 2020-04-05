@@ -471,16 +471,27 @@ test_that("slice.keyed_df works", {
   slice_f <- . %>% slice(c(4, 5, 31, 3, 3, 14, 18, 30, 31, 44))
   assign_perm_keys <- assigning_ref_keys(slice_f)
   assign_perm_keys_gr <- assigning_ref_keys(slice_f, mtcars_grouped)
+  # Need extra version for `rowwise()` because starting from 'dplyr 1.0.0'
+  # `slice()` on `rowwise_df` behaves like on `grouped_df` with every row being
+  # a group. So before 1.0.0, `tibble(x=1:3) %>% rowwise() %>% slice(2)` would
+  # return second row of the whole tibble, in 1.0.0 it would return zero-row
+  # tibble, the same as `tibble(x=1:3) %>% group_by(x) %>% slice(2)` in this
+  # setup.
+  assign_perm_key_rowwise <- assigning_ref_keys(slice_f, mtcars_rowwise)
 
   output_1_f <- . %>% slice_f() %>% assign_perm_keys()
   output_1_f_gr <- . %>% slice_f() %>% assign_perm_keys_gr()
+  output_1_f_rowwise <- . %>% slice_f() %>% assign_perm_key_rowwise()
   output_2_f <- . %>% assign_keys_mtcars() %>% slice_f()
 
   expect_identical(output_1_f(mtcars_df), output_2_f(mtcars_df))
   expect_identical(output_1_f(mtcars_tbl), output_2_f(mtcars_tbl))
   # Slicing grouped_df is done differently
   expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
-  expect_identical(output_1_f(mtcars_rowwise), output_2_f(mtcars_rowwise))
+  # Slicing rowwise_df is done as if every row is a single-element group
+  expect_identical(
+    output_1_f_rowwise(mtcars_rowwise), output_1_f_rowwise(mtcars_rowwise)
+  )
 })
 
 

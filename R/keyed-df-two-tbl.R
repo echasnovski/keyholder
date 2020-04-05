@@ -83,8 +83,12 @@ next_method_keys_two_tbl <- function(.tbl_1, .tbl_2, .f, ...) {
   y_1[[id_name]] <- 1:nrow(y_1)
   res <- .f(y_1, unkey(.tbl_2), ...)
 
-  keys(res) <- keys(.tbl_1)[res[[id_name]], ]
+  # Removing column with name in `id_name` before assigning keys is important
+  # because `[[` operation on `res` might remove `keyed_df` class that should be
+  # added during `keys<-()` execution.
+  id_vals <- res[[id_name]]
   res[[id_name]] <- NULL
+  keys(res) <- keys(.tbl_1)[id_vals, ]
 
   res
 }
