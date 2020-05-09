@@ -28,7 +28,7 @@
 
 \method{ungroup}{keyed_df}(.tbl, ...)
 
-rowwise.keyed_df(.tbl)
+\method{rowwise}{keyed_df}(.tbl)
 
 \method{distinct}{keyed_df}(.tbl, ..., .keep_all = FALSE)
 
