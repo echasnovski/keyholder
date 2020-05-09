@@ -3,6 +3,7 @@
 Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder)
 [![Coverage
 Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
+[![CRAN](https://www.r-pkg.org/badges/version/keyholder?color=blue)](https://cran.r-project.org/package=keyholder)
 
 # keyholder
 
@@ -94,9 +95,17 @@ mtcars_tbl_keyed <- mtcars_tbl %>%
   mutate(gear = max(gear))
 
 # Restore with recomputing groups
-mtcars_tbl_keyed %>%
-  restore_keys_all() %>%
-  all.equal(mtcars_tbl)
+mtcars_tbl_restored <- mtcars_tbl_keyed %>% restore_keys_all()
+mtcars_tbl_grouped <- mtcars_tbl %>% group_by(vs)
+all.equal(
+  as.data.frame(mtcars_tbl_restored),
+  as.data.frame(mtcars_tbl_grouped)
+)
+#> [1] TRUE
+all.equal(
+  group_indices(mtcars_tbl_restored),
+  group_indices(mtcars_tbl_grouped)
+)
 #> [1] TRUE
 
 # Restore with renaming
