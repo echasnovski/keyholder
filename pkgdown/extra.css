@@ -3,6 +3,14 @@
     border-color: #000080;
 }
 
+#toc {
+  font-size: 150%;
+}
+
+#toc .nav a {
+  font-size: 100%;
+}
+
 pre {
     background-color: #ffffff;
     border-color: #000000;
