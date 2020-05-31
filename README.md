@@ -1,11 +1,16 @@
 
+# keyholder
+
+<!-- badges: start -->
+
 [![Travis-CI Build
 Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder)
 [![Coverage
 Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
 [![CRAN](https://www.r-pkg.org/badges/version/keyholder?color=blue)](https://cran.r-project.org/package=keyholder)
-
-# keyholder
+[![Dependencies](https://tinyverse.netlify.com/badge/keyholder)](https://CRAN.R-project.org/package=keyholder)
+[![Downloads](http://cranlogs.r-pkg.org/badges/keyholder)](https://cran.r-project.org/package=keyholder)
+<!-- badges: end -->
 
 `keyholder` is a package for storing information (*keys*) about rows of
 data frame like objects. The common use cases are to track rows of data
