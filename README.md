@@ -104,7 +104,8 @@ mtcars_tbl_restored <- mtcars_tbl_keyed %>% restore_keys_all()
 mtcars_tbl_grouped <- mtcars_tbl %>% group_by(vs)
 all.equal(
   as.data.frame(mtcars_tbl_restored),
-  as.data.frame(mtcars_tbl_grouped)
+  as.data.frame(mtcars_tbl_grouped),
+  check.attributes = FALSE
 )
 #> [1] TRUE
 all.equal(
