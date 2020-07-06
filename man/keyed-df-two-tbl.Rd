@@ -23,10 +23,10 @@
 \method{anti_join}{keyed_df}(x, y, by = NULL, copy = FALSE, ...)
 }
 \arguments{
-\item{x, y, by, copy, suffix, ...}{Parameters for \link[dplyr:join]{join} functions.}
+\item{x, y, by, copy, suffix, ...}{Parameters for \link[dplyr:mutate-joins]{join} functions.}
 }
 \description{
-Defined methods for \link{dplyr} generic \link[dplyr:join]{join} functions. All of
+Defined methods for \link{dplyr} generic \link[dplyr:mutate-joins]{join} functions. All of
 them preserve 'keyed_df' class and 'keys' attribute \strong{of the first
 argument}. Also these methods modify rows in keys according to the rows
 modification in first argument (if any).

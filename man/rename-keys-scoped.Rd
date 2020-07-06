@@ -26,5 +26,5 @@ rename_keys_at(.tbl, .vars, .funs = list(), ...)
 }
 \description{
 These functions rename selection of keys using corresponding
-\link[dplyr:rename_all]{scoped variant} of \link[dplyr:rename]{rename}.
+\link[dplyr:select_all]{scoped variant} of \link[dplyr:rename]{rename}.
 }

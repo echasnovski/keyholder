@@ -57,7 +57,7 @@ modify rows in keys according to the rows modification in reference
 data frame (if any).
 }
 \details{
-\code{\link[dplyr:transmute]{dplyr::transmute()}} is supported implicitly with \code{\link[dplyr:mutate]{dplyr::mutate()}}
+\code{\link[dplyr:mutate]{dplyr::transmute()}} is supported implicitly with \code{\link[dplyr:mutate]{dplyr::mutate()}}
 support.
 
 \code{\link[dplyr:rowwise]{dplyr::rowwise()}} is not supposed to be generic in \code{dplyr}. Use
