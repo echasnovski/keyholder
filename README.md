@@ -5,6 +5,8 @@
 
 [![Travis-CI Build
 Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder)
+[![R build
+status](https://github.com/echasnovski/keyholder/workflows/R-CMD-check/badge.svg)](https://github.com/echasnovski/keyholder/actions)
 [![Coverage
 Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
 [![CRAN](https://www.r-pkg.org/badges/version/keyholder?color=blue)](https://cran.r-project.org/package=keyholder)
