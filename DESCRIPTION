@@ -5,7 +5,8 @@ Authors@R:
     person(given = "Evgeni",
            family = "Chasnovski",
            role = c("aut", "cre"),
-           email = "evgeni.chasnovski@gmail.com")
+           email = "evgeni.chasnovski@gmail.com",
+           comment = c(ORCID = "0000-0002-1617-4019"))
 Description: Tools for keeping track of information, named
     "keys", about rows of data frame like objects. This is done by
     creating special attribute "keys" which is updated after every change
