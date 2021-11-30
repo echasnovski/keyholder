@@ -46,6 +46,12 @@ mutate.keyed_df <- function(.tbl, ...) {
 
 #' @rdname keyed-df-one-tbl
 #' @export
+transmute.keyed_df <- function(.tbl, ...) {
+  next_method_keys(.tbl, transmute, ...)
+}
+
+#' @rdname keyed-df-one-tbl
+#' @export
 summarise.keyed_df <- function(.tbl, ...) {
   summarise(unkey(.tbl), ...)
 }

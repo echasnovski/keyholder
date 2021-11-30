@@ -1,5 +1,7 @@
 # keyholder (development version)
 
+* Reaction to `dplyr` 1.0.8.
+
 # keyholder 0.1.5
 
 * Reaction to `dplyr` 1.0.0.

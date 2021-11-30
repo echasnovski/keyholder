@@ -5,6 +5,7 @@
 \alias{select.keyed_df}
 \alias{rename.keyed_df}
 \alias{mutate.keyed_df}
+\alias{transmute.keyed_df}
 \alias{summarise.keyed_df}
 \alias{group_by.keyed_df}
 \alias{ungroup.keyed_df}
@@ -21,6 +22,8 @@
 \method{rename}{keyed_df}(.tbl, ...)
 
 \method{mutate}{keyed_df}(.tbl, ...)
+
+\method{transmute}{keyed_df}(.tbl, ...)
 
 \method{summarise}{keyed_df}(.tbl, ...)
 
