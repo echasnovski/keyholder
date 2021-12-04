@@ -1,13 +1,13 @@
 ## Submission details
 
-This submission is reaction to upcoming changes in 'dplyr' 1.0.0.
+This submission is reaction to upcoming changes in 'dplyr' 1.0.8.
 
 ## Test environments
 
-* Local Ubuntu 18.04 install, R 3.6.3
-* Debian on R-hub, R development version (2020-05-07 r78381)
-* macOS 10.13.6 on R-hub, R 4.0.0
-* win-builder, release and development version (2020-05-08 r78391)
+* Local Ubuntu 18.04 install, R 4.0.3
+* Debian on R-hub, R development version (2021-12-03 r81290)
+* macOS 10.13.6 on R-hub, R 4.1.1
+* win-builder, release and development version (2021-12-03 r81290)
 
 ## R CMD check results
 
