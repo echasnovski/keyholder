@@ -1,4 +1,4 @@
-# keyholder (development version)
+# keyholder 0.1.6
 
 * Reaction to `dplyr` 1.0.8.
 

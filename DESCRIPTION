@@ -1,6 +1,6 @@
 Package: keyholder
 Title: Store Data About Rows
-Version: 0.1.5.9000
+Version: 0.1.6
 Authors@R: 
     person(given = "Evgeni",
            family = "Chasnovski",
