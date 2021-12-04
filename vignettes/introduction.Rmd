@@ -39,7 +39,7 @@ mtcars_tbl <- mtcars %>% as_tibble()
 
 ## Set keys
 
-The general agreement is that keys are always converted to [tibble](http://tibble.tidyverse.org). In this way one can use multiple
+The general agreement is that keys are always converted to [tibble](https://tibble.tidyverse.org). In this way one can use multiple
 variables as keys by binding them.
 
 There are two general ways of creating keys:
@@ -49,7 +49,7 @@ There are two general ways of creating keys:
 data frame. There are two functions for assigning: `keys<-` and `assign_keys()`
 which are basically the same. The former use more suitable for interactive use
 and the latter - for piping with
-[magrittr](http://magrittr.tidyverse.org)'s pipe operator `%>%`.
+[magrittr](https://magrittr.tidyverse.org)'s pipe operator `%>%`.
 
 ```{r set keys by assigning}
 mtcars_tbl_keyed <- mtcars_tbl

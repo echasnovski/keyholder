@@ -28,7 +28,7 @@ modifying it and to backup and restore information about rows. This is done with
 creating a class __keyed_df__ which has special attribute "keys". Keys are
 updated according to changes in rows of reference data frame.
 
-`keyholder` is designed to work tightly with [dplyr](http://dplyr.tidyverse.org/) package. All its one- and two-table verbs update keys properly.
+`keyholder` is designed to work tightly with [dplyr](https://dplyr.tidyverse.org/) package. All its one- and two-table verbs update keys properly.
 
 ## Installation
 
