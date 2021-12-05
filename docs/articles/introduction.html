@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,18 +34,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">keyholder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.6</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -65,8 +61,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/echasnovski/keyholder/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/keyholder/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -84,11 +80,11 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to keyholder</h1>
-                        <h4 class="author">Evgeni Chasnovski</h4>
+                        <h4 data-toc-skip class="author">Evgeni Chasnovski</h4>
             
-            <h4 class="date">2020-05-10</h4>
+            <h4 data-toc-skip class="date">2021-12-05</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/echasnovski/keyholder/blob/master/vignettes/introduction.Rmd"><code>vignettes/introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/echasnovski/keyholder/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
 
     </div>
@@ -96,394 +92,407 @@
     
     
 <p><code>keyholder</code> is a package for storing information (<em>keys</em>) about rows of data frame like objects. The common use cases are to track rows of data without modifying it and to backup and restore information about rows. This is done with creating a class <strong>keyed_df</strong> which has special attribute “keys”. Keys are updated according to changes in rows of reference data frame.</p>
-<p><code>keyholder</code> is designed to work tightly with <a href="https://github.com/tidyverse/dplyr">dplyr</a> package. All its one- and two-table verbs update keys properly.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl</span> <span class="kw">&lt;-</span> <span class="no">mtcars</span> <span class="kw">%&gt;%</span> <span class="fu">as_tibble</span>()</code></pre></body></html></div>
-<div id="set-keys" class="section level2">
-<h2 class="hasAnchor">
-<a href="#set-keys" class="anchor"></a>Set keys</h2>
-<p>The general agreement is that keys are always converted to <a href="http://tibble.tidyverse.org">tibble</a>. In this way one can use multiple variables as keys by binding them.</p>
+<p><code>keyholder</code> is designed to work tightly with <a href="https://github.com/tidyverse/dplyr" class="external-link">dplyr</a> package. All its one- and two-table verbs update keys properly.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></code></code></pre></div>
+<div class="section level2">
+<h2 id="set-keys">Set keys<a class="anchor" aria-label="anchor" href="#set-keys"></a>
+</h2>
+<p>The general agreement is that keys are always converted to <a href="https://tibble.tidyverse.org" class="external-link">tibble</a>. In this way one can use multiple variables as keys by binding them.</p>
 <p>There are two general ways of creating keys:</p>
 <ul>
-<li>With assigning. The assigned object will be converted to tibble with <code>as_tibble()</code>. To make sense it should have the same number of rows as reference data frame. There are two functions for assigning: <code>keys&lt;-</code> and <code><a href="../reference/keys-set.html">assign_keys()</a></code> which are basically the same. The former use more suitable for interactive use and the latter - for piping with <a href="http://magrittr.tidyverse.org">magrittr</a>’s pipe operator <code><a href="https://rdrr.io/pkg/magrittr/man/pipe.html">%&gt;%</a></code>.</li>
+<li>With assigning. The assigned object will be converted to tibble with <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code>. To make sense it should have the same number of rows as reference data frame. There are two functions for assigning: <code>keys&lt;-</code> and <code><a href="../reference/keys-set.html">assign_keys()</a></code> which are basically the same. The former use more suitable for interactive use and the latter - for piping with <a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a>’s pipe operator <code>%&gt;%</code>.</li>
 </ul>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl_keyed</span> <span class="kw">&lt;-</span> <span class="no">mtcars_tbl</span>
-<span class="fu"><a href="../reference/keys-get.html">keys</a></span>(<span class="no">mtcars_tbl_keyed</span>) <span class="kw">&lt;-</span> <span class="fu">tibble</span>(<span class="kw">id</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">mtcars_tbl_keyed</span>))
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl_keyed</span> <span class="op">&lt;-</span> <span class="va">mtcars_tbl</span>
+<span class="fu"><a href="../reference/keys-get.html">keys</a></span><span class="op">(</span><span class="va">mtcars_tbl_keyed</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mtcars_tbl_keyed</span><span class="op">)</span><span class="op">)</span>
 
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">assign_keys</a></span>(<span class="fu">tibble</span>(<span class="kw">id</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">.</span>)))
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">assign_keys</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: id </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span></code></code></pre></div>
 <ul>
-<li>With <code><a href="../reference/keys-set.html">key_by()</a></code> and its scoped variants (<code>*_all()</code>, <code>*_if()</code> and <code>*_at()</code>). This is similar in its design to <code>dplyr</code>’s <code>group_by()</code>: it takes some columns from reference data frame and makes keys from them. It has two important options: <code>.add</code> (whether to add specified columns to existing keys) and <code>.exclude</code> (whether to exclude specified columns from reference data frame). Grouping is ignored.</li>
+<li>With <code><a href="../reference/keys-set.html">key_by()</a></code> and its scoped variants (<code>*_all()</code>, <code>*_if()</code> and <code>*_at()</code>). This is similar in its design to <code>dplyr</code>’s <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by()</a></code>: it takes some columns from reference data frame and makes keys from them. It has two important options: <code>.add</code> (whether to add specified columns to existing keys) and <code>.exclude</code> (whether to exclude specified columns from reference data frame). Grouping is ignored.</li>
 </ul>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">am</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, am </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="fu">starts_with</span>(<span class="st">"c"</span>))
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: cyl, carb </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="fu">starts_with</span>(<span class="st">"c"</span>), <span class="kw">.exclude</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span>, .exclude <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: cyl, carb </span>
-<span class="co">#&gt; # A tibble: 32 x 9</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 9</span></span>
 <span class="co">#&gt;     mpg  disp    hp  drat    wt  qsec    vs    am  gear</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21     160   110  3.9   2.62  16.5     0     1     4</span>
-<span class="co">#&gt; 2  21     160   110  3.9   2.88  17.0     0     1     4</span>
-<span class="co">#&gt; 3  22.8   108    93  3.85  2.32  18.6     1     1     4</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21     160   110  3.9   2.62  16.5     0     1     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21     160   110  3.9   2.88  17.0     0     1     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8   108    93  3.85  2.32  18.6     1     1     4</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
   <span class="co"># Scoped variants</span>
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/key-by-scoped.html">key_by_all</a></span>()
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/key-by-scoped.html">key_by_all</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
 <span class="co"># One can also rename variables before keying by supplying .funs</span>
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/key-by-scoped.html">key_by_if</a></span>(<span class="kw pkg">rlang</span><span class="kw ns">::</span><span class="no"><a href="https://rlang.r-lib.org/reference/is_integerish.html">is_integerish</a></span>, <span class="kw">.funs</span> <span class="kw">=</span> <span class="no">toupper</span>)
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/key-by-scoped.html">key_by_if</a></span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="https://rlang.r-lib.org/reference/is_integerish.html" class="external-link">is_integerish</a></span>, .funs <span class="op">=</span> <span class="va">toupper</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: CYL, HP, VS, AM, GEAR, CARB </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/key-by-scoped.html">key_by_at</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"vs"</span>, <span class="st">"am"</span>))
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/key-by-scoped.html">key_by_at</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vs"</span>, <span class="st">"am"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, am </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span></code></code></pre></div>
 <p>To track rows use <code><a href="../reference/keyholder-id.html">use_id()</a></code> which creates a special key <code>.id</code> with row numbers as values.</p>
 <p>To properly unkey object use <code><a href="../reference/keys-set.html">unkey()</a></code>.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl_keyed</span> <span class="kw">&lt;-</span> <span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">am</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl_keyed</span> <span class="op">&lt;-</span> <span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span><span class="op">)</span>
 
 <span class="co"># Good</span>
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">unkey</a></span>()
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">unkey</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
 <span class="co"># Bad</span>
-<span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">mtcars_tbl_keyed</span>, <span class="st">"keys"</span>) <span class="kw">&lt;-</span> <span class="kw">NULL</span>
-<span class="no">mtcars_tbl_keyed</span>
+<span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">mtcars_tbl_keyed</span>, <span class="st">"keys"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+<span class="va">mtcars_tbl_keyed</span>
 <span class="co">#&gt; # A keyed object. Keys: there are no keys.</span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span></code></code></pre></div>
 </div>
-<div id="get-keys" class="section level2">
-<h2 class="hasAnchor">
-<a href="#get-keys" class="anchor"></a>Get keys</h2>
+<div class="section level2">
+<h2 id="get-keys">Get keys<a class="anchor" aria-label="anchor" href="#get-keys"></a>
+</h2>
 <p>There are three ways of extracting keys:</p>
 <ul>
 <li>With <code><a href="../reference/keys-get.html">keys()</a></code>. This function always returns a tibble. In case of no keys it returns a tibble with number of rows as in reference data frame and zero columns.</li>
 </ul>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-get.html">keys</a></span>()
-<span class="co">#&gt; # A tibble: 32 x 0</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-get.html">keys</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 0</span></span>
 
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">am</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-get.html">keys</a></span>()
-<span class="co">#&gt; # A tibble: 32 x 2</span>
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-get.html">keys</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 2</span></span>
 <span class="co">#&gt;      vs    am</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     0     1</span>
-<span class="co">#&gt; 2     0     1</span>
-<span class="co">#&gt; 3     1     1</span>
-<span class="co">#&gt; # … with 29 more rows</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     0     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span></code></code></pre></div>
 <ul>
-<li>With <code><a href="../reference/keys-get.html">raw_keys()</a></code> which is just a wrapper for <code><a href="https://rdrr.io/r/base/attr.html">attr(.tbl, "keys")</a></code>.</li>
+<li>With <code><a href="../reference/keys-get.html">raw_keys()</a></code> which is just a wrapper for <code>attr(.tbl, "keys")</code>.</li>
 </ul>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-get.html">raw_keys</a></span>()
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-get.html">raw_keys</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; NULL</span>
 
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">am</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-get.html">raw_keys</a></span>()
-<span class="co">#&gt; # A tibble: 32 x 2</span>
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-get.html">raw_keys</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 2</span></span>
 <span class="co">#&gt;      vs    am</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     0     1</span>
-<span class="co">#&gt; 2     0     1</span>
-<span class="co">#&gt; 3     1     1</span>
-<span class="co">#&gt; # … with 29 more rows</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     0     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span></code></code></pre></div>
 <ul>
 <li>With <code><a href="../reference/keys-manipulate.html">pull_key()</a></code> which works like <code>dplyr</code>’s <code>pull</code> applied to keys:</li>
 </ul>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">am</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-manipulate.html">pull_key</a></span>(<span class="no">vs</span>)
-<span class="co">#&gt;  [1] 0 0 1 1 0 1 0 1 1 1 1 0 0 0 0 0 0 1 1 1 1 0 0 0 0 1 0 1 0 0 0 1</span></code></pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-manipulate.html">pull_key</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span>
+<span class="co">#&gt;  [1] 0 0 1 1 0 1 0 1 1 1 1 0 0 0 0 0 0 1 1 1 1 0 0 0 0 1 0 1 0 0 0 1</span></code></code></pre></div>
 </div>
-<div id="manipulate-keys" class="section level2">
-<h2 class="hasAnchor">
-<a href="#manipulate-keys" class="anchor"></a>Manipulate keys</h2>
+<div class="section level2">
+<h2 id="manipulate-keys">Manipulate keys<a class="anchor" aria-label="anchor" href="#manipulate-keys"></a>
+</h2>
 <ul>
 <li>Remove certain keys with <code><a href="../reference/keys-manipulate.html">remove_keys()</a></code> and its scoped variants. If all keys are removed one can automatically unkey object by setting option <code>.unkey</code> to <code>TRUE</code>.</li>
 </ul>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">mpg</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-manipulate.html">remove_keys</a></span>(<span class="no">vs</span>)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-manipulate.html">remove_keys</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">mpg</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-manipulate.html">remove_keys</a></span>(<span class="fu">everything</span>(), <span class="kw">.unkey</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-manipulate.html">remove_keys</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>, .unkey <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
   <span class="co"># Scoped variants</span>
 <span class="co"># Identical to previous one</span>
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">mpg</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/remove-keys-scoped.html">remove_keys_all</a></span>(<span class="kw">.unkey</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/remove-keys-scoped.html">remove_keys_all</a></span><span class="op">(</span>.unkey <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">mpg</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/remove-keys-scoped.html">remove_keys_if</a></span>(<span class="kw pkg">rlang</span><span class="kw ns">::</span><span class="no"><a href="https://rlang.r-lib.org/reference/is_integerish.html">is_integerish</a></span>)
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/remove-keys-scoped.html">remove_keys_if</a></span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="https://rlang.r-lib.org/reference/is_integerish.html" class="external-link">is_integerish</a></span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span></code></code></pre></div>
 <ul>
 <li>Restore certain keys with <code><a href="../reference/keys-manipulate.html">restore_keys()</a></code> and its scoped variants. Restoring means creating or modifying a column in reference data frame with values taken from keys. After restoring certain key one can remove it from keys by setting <code>.remove</code> to <code>TRUE</code>. There is also an option <code>.unkey</code> identical to one in <code><a href="../reference/keys-manipulate.html">remove_keys()</a></code> (which is meaningful only in case <code>.remove</code> is <code>TRUE</code>).</li>
 </ul>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl_keyed</span> <span class="kw">&lt;-</span> <span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">mpg</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(<span class="kw">vs</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">mpg</span> <span class="kw">=</span> <span class="fl">0</span>)
-<span class="no">mtcars_tbl_keyed</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl_keyed</span> <span class="op">&lt;-</span> <span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>vs <span class="op">=</span> <span class="fl">1</span>, mpg <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<span class="va">mtcars_tbl_keyed</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     0     6   160   110  3.9   2.62  16.5     1     1     4     4</span>
-<span class="co">#&gt; 2     0     6   160   110  3.9   2.88  17.0     1     1     4     4</span>
-<span class="co">#&gt; 3     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0     6   160   110  3.9   2.62  16.5     1     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     0     6   160   110  3.9   2.88  17.0     1     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span>(<span class="no">vs</span>)
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     0     6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2     0     6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0     6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     0     6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span>(<span class="no">vs</span>, <span class="kw">.remove</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span><span class="op">(</span><span class="va">vs</span>, .remove <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     0     6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2     0     6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0     6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     0     6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span>(<span class="no">vs</span>, <span class="no">mpg</span>, <span class="kw">.unkey</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span>, .unkey <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span>(<span class="no">vs</span>, <span class="no">mpg</span>, <span class="kw">.remove</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">.unkey</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span>, .remove <span class="op">=</span> <span class="cn">TRUE</span>, .unkey <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
   <span class="co"># Scoped variants</span>
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/restore-keys-scoped.html">restore_keys_all</a></span>()
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/restore-keys-scoped.html">restore_keys_all</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/restore-keys-scoped.html">restore_keys_if</a></span>(<span class="kw pkg">rlang</span><span class="kw ns">::</span><span class="no"><a href="https://rlang.r-lib.org/reference/is_integerish.html">is_integerish</a></span>, <span class="kw">.remove</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/restore-keys-scoped.html">restore_keys_if</a></span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="https://rlang.r-lib.org/reference/is_integerish.html" class="external-link">is_integerish</a></span>, .remove <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     0     6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2     0     6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0     6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     0     6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span></code></code></pre></div>
 <p>One important feature of <code><a href="../reference/keys-manipulate.html">restore_keys()</a></code> is that restoring keys beats ‘not-modifying’ grouping variables rule. It is made according to the ideology of keys: they contain information about rows and by restoring you want it to be available. Groups are recomputed after restoring.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu">group_by</span>(<span class="no">vs</span>, <span class="no">mpg</span>)
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
-<span class="co">#&gt; # Groups:   vs, mpg [1]</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># Groups:   vs, mpg [1]</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     0     6   160   110  3.9   2.62  16.5     1     1     4     4</span>
-<span class="co">#&gt; 2     0     6   160   110  3.9   2.88  17.0     1     1     4     4</span>
-<span class="co">#&gt; 3     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0     6   160   110  3.9   2.62  16.5     1     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     0     6   160   110  3.9   2.88  17.0     1     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     0     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu">group_by</span>(<span class="no">vs</span>, <span class="no">mpg</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span>(<span class="no">vs</span>, <span class="no">mpg</span>)
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-manipulate.html">restore_keys</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">mpg</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, mpg </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
-<span class="co">#&gt; # Groups:   vs, mpg [26]</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># Groups:   vs, mpg [26]</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span></code></code></pre></div>
 <ul>
-<li>Rename keys with <code><a href="../reference/keys-manipulate.html">rename_keys()</a></code> and its scoped variants. Renaming is done with <code>dplyr</code>’s <code>rename()</code> or its scoped variant and so renaming format comes from them.</li>
+<li>Rename keys with <code><a href="../reference/keys-manipulate.html">rename_keys()</a></code> and its scoped variants. Renaming is done with <code>dplyr</code>’s <code><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename()</a></code> or its scoped variant and so renaming format comes from them.</li>
 </ul>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">am</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-manipulate.html">rename_keys</a></span>(<span class="kw">Vs</span> <span class="kw">=</span> <span class="no">vs</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-manipulate.html">rename_keys</a></span><span class="op">(</span>Vs <span class="op">=</span> <span class="va">vs</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: Vs, am </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
   <span class="co"># Scoped variants</span>
-<span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">am</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/rename-keys-scoped.html">rename_keys_all</a></span>(<span class="kw">.funs</span> <span class="kw">=</span> <span class="no">toupper</span>)
+<span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/rename-keys-scoped.html">rename_keys_all</a></span><span class="op">(</span>.funs <span class="op">=</span> <span class="va">toupper</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: VS, AM </span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 11</span></span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; # … with 29 more rows</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span></code></code></pre></div>
 </div>
-<div id="react-to-subset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#react-to-subset" class="anchor"></a>React to subset</h2>
-<p>A method for subsetting function <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> is implemented for <code>keyed_df</code> to react on changes in rows: if rows in reference data frame are rearranged or removed the same operation is done to keys.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl_subset</span> <span class="kw">&lt;-</span> <span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">am</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">`[`</span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3</span>, <span class="fl">18</span>, <span class="fl">19</span>), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">8</span>, <span class="fl">9</span>))
+<div class="section level2">
+<h2 id="react-to-subset">React to subset<a class="anchor" aria-label="anchor" href="#react-to-subset"></a>
+</h2>
+<p>A method for subsetting function <code>[</code> is implemented for <code>keyed_df</code> to react on changes in rows: if rows in reference data frame are rearranged or removed the same operation is done to keys.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl_subset</span> <span class="op">&lt;-</span> <span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">`[`</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">18</span>, <span class="fl">19</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span>
 
-<span class="no">mtcars_tbl_subset</span>
+<span class="va">mtcars_tbl_subset</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, am </span>
-<span class="co">#&gt; # A tibble: 3 x 3</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span>
 <span class="co">#&gt;     cyl    vs    am</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     4     1     1</span>
-<span class="co">#&gt; 2     4     1     1</span>
-<span class="co">#&gt; 3     4     1     1</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     4     1     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     4     1     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     4     1     1</span>
 
-<span class="fu"><a href="../reference/keys-get.html">keys</a></span>(<span class="no">mtcars_tbl_subset</span>)
-<span class="co">#&gt; # A tibble: 3 x 2</span>
+<span class="fu"><a href="../reference/keys-get.html">keys</a></span><span class="op">(</span><span class="va">mtcars_tbl_subset</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span>
 <span class="co">#&gt;      vs    am</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     1     1</span>
-<span class="co">#&gt; 2     1     1</span>
-<span class="co">#&gt; 3     1     1</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1     1</span></code></code></pre></div>
 </div>
-<div id="verbs-from-dplyr" class="section level2">
-<h2 class="hasAnchor">
-<a href="#verbs-from-dplyr" class="anchor"></a>Verbs from dplyr</h2>
-<p>All one- and two-table verbs from <code>dplyr</code> (with present scoped variants) support <code>keyed_df</code>. Most functions react to changes in rows as in <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> but some functions (<code>summarise()</code>, <code>distinct()</code> and <code>do()</code>) unkey object.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><code class = "r"><span class="no">mtcars_tbl_keyed</span> <span class="kw">&lt;-</span> <span class="no">mtcars_tbl</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">vs</span>, <span class="no">am</span>)
+<div class="section level2">
+<h2 id="verbs-from-dplyr">Verbs from dplyr<a class="anchor" aria-label="anchor" href="#verbs-from-dplyr"></a>
+</h2>
+<p>All one- and two-table verbs from <code>dplyr</code> (with present scoped variants) support <code>keyed_df</code>. Most functions react to changes in rows as in <code>[</code> but some functions (<code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/do.html" class="external-link">do()</a></code>) unkey object.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">mtcars_tbl_keyed</span> <span class="op">&lt;-</span> <span class="va">mtcars_tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span><span class="op">)</span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu">select</span>(<span class="no">gear</span>, <span class="no">mpg</span>)
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">gear</span>, <span class="va">mpg</span><span class="op">)</span>
 <span class="co">#&gt; # A keyed object. Keys: vs, am </span>
-<span class="co">#&gt; # A tibble: 32 x 2</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 2</span></span>
 <span class="co">#&gt;    gear   mpg</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     4  21  </span>
-<span class="co">#&gt; 2     4  21  </span>
-<span class="co">#&gt; 3     4  22.8</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     4  21  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     4  21  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     4  22.8</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu">summarise</span>(<span class="kw">meanMPG</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">mpg</span>))
-<span class="co">#&gt; # A tibble: 1 x 1</span>
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>meanMPG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">#&gt;   meanMPG</span>
-<span class="co">#&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    20.1</span>
+<span class="co">#&gt;     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    20.1</span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">vs</span> <span class="kw">==</span> <span class="fl">1</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-get.html">keys</a></span>()
-<span class="co">#&gt; # A tibble: 14 x 2</span>
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">vs</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-get.html">keys</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 14 × 2</span></span>
 <span class="co">#&gt;      vs    am</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     1     1</span>
-<span class="co">#&gt; 2     1     0</span>
-<span class="co">#&gt; 3     1     0</span>
-<span class="co">#&gt; # … with 11 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1     0</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 11 more rows</span></span>
 
-<span class="no">mtcars_tbl_keyed</span> <span class="kw">%&gt;%</span> <span class="fu">arrange_at</span>(<span class="st">"mpg"</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-get.html">keys</a></span>()
-<span class="co">#&gt; # A tibble: 32 x 2</span>
+<span class="va">mtcars_tbl_keyed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange_all.html" class="external-link">arrange_at</a></span><span class="op">(</span><span class="st">"mpg"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-get.html">keys</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 2</span></span>
 <span class="co">#&gt;      vs    am</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     0     0</span>
-<span class="co">#&gt; 2     0     0</span>
-<span class="co">#&gt; 3     0     0</span>
-<span class="co">#&gt; # … with 29 more rows</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     0     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     0     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     0     0</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 29 more rows</span></span>
 
-<span class="no">band_members</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span>(<span class="no">name</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">semi_join</span>(<span class="no">band_instruments</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="st">"name"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/keys-get.html">keys</a></span>()
-<span class="co">#&gt; # A tibble: 2 x 1</span>
+<span class="va">band_members</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/keys-set.html">key_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">band_instruments</span>, by <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/keys-get.html">keys</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 1</span></span>
 <span class="co">#&gt;   name </span>
-<span class="co">#&gt;   &lt;chr&gt;</span>
-<span class="co">#&gt; 1 John </span>
-<span class="co">#&gt; 2 Paul</span></code></pre></body></html></div>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> John </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Paul</span></code></code></pre></div>
 </div>
   </div>
 
@@ -498,11 +507,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Evgeni Chasnovski.</p>
+  <p></p>
+<p>Developed by Evgeni Chasnovski.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -510,6 +521,8 @@
 
   
 
+
+  
 
   </body>
 </html>
