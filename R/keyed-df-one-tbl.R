@@ -6,7 +6,7 @@
 #' modify rows in keys according to the rows modification in reference
 #' data frame (if any).
 #'
-#' @param .tbl,.data A keyed object.
+#' @param .data,data,x A keyed object.
 #' @param ... Appropriate arguments for functions.
 #' @param .keep_all Parameter for [dplyr::distinct].
 #' @param .by_group Parameter for [dplyr::arrange].
@@ -28,72 +28,72 @@ NULL
 
 #' @rdname keyed-df-one-tbl
 #' @export
-select.keyed_df <- function(.tbl, ...) {
-  next_method_keys(.tbl, select, ...)
+select.keyed_df <- function(.data, ...) {
+  next_method_keys(.data, select, ...)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
-rename.keyed_df <- function(.tbl, ...) {
-  next_method_keys(.tbl, rename, ...)
+rename.keyed_df <- function(.data, ...) {
+  next_method_keys(.data, rename, ...)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
-mutate.keyed_df <- function(.tbl, ...) {
-  next_method_keys(.tbl, mutate, ...)
+mutate.keyed_df <- function(.data, ...) {
+  next_method_keys(.data, mutate, ...)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
-transmute.keyed_df <- function(.tbl, ...) {
-  next_method_keys(.tbl, transmute, ...)
+transmute.keyed_df <- function(.data, ...) {
+  next_method_keys(.data, transmute, ...)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
-summarise.keyed_df <- function(.tbl, ...) {
-  summarise(unkey(.tbl), ...)
+summarise.keyed_df <- function(.data, ...) {
+  summarise(unkey(.data), ...)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
-group_by.keyed_df <- function(.tbl, ...) {
-  next_method_keys(.tbl, group_by, ...)
+group_by.keyed_df <- function(.data, ...) {
+  next_method_keys(.data, group_by, ...)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
-ungroup.keyed_df <- function(.tbl, ...) {
-  next_method_keys(.tbl, ungroup, ...)
+ungroup.keyed_df <- function(x, ...) {
+  next_method_keys(x, ungroup, ...)
 }
 
 # rowwise is not supposed to be generic in dplyr so use this function directly
 #' @rdname keyed-df-one-tbl
 #' @export
-rowwise.keyed_df <- function(.tbl) {
-  next_method_keys(.tbl, rowwise)
+rowwise.keyed_df <- function(data, ...) {
+  next_method_keys(data, rowwise)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
-distinct.keyed_df <- function(.tbl, ..., .keep_all = FALSE) {
-  distinct(unkey(.tbl), ..., .keep_all = .keep_all)
+distinct.keyed_df <- function(.data, ..., .keep_all = FALSE) {
+  distinct(unkey(.data), ..., .keep_all = .keep_all)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
-do.keyed_df <- function(.tbl, ...) {
-  do(unkey(.tbl), ...)
+do.keyed_df <- function(.data, ...) {
+  do(unkey(.data), ...)
 }
 
 #' @rdname keyed-df-one-tbl
 #' @export
-arrange.keyed_df <- function(.tbl, ..., .by_group = FALSE) {
-  if (is_grouped_df(.tbl)) {
-    next_method_keys_track(.tbl, arrange, ..., .by_group = .by_group)
+arrange.keyed_df <- function(.data, ..., .by_group = FALSE) {
+  if (is_grouped_df(.data)) {
+    next_method_keys_track(.data, arrange, ..., .by_group = .by_group)
   } else {
-    next_method_keys_track(.tbl, arrange, ...)
+    next_method_keys_track(.data, arrange, ...)
   }
 }
 
@@ -109,20 +109,20 @@ filter.keyed_df <- function(.data, ...) {
 
 #' @rdname keyed-df-one-tbl
 #' @export
-slice.keyed_df <- function(.tbl, ...) {
-  next_method_keys_track(.tbl, slice, ...)
+slice.keyed_df <- function(.data, ...) {
+  next_method_keys_track(.data, slice, ...)
 }
 
-next_method_keys <- function(.tbl, .f, ...) {
-  # If attr(.tbl, "keys") is NULL it is replaced with 0-column tibble
-  .f(unkey(.tbl), ...) %>% assign_keys(keys(.tbl))
+next_method_keys <- function(.data, .f, ...) {
+  # If attr(.data, "keys") is NULL it is replaced with 0-column tibble
+  .f(unkey(.data), ...) %>% assign_keys(keys(.data))
 }
 
-next_method_keys_track <- function(.tbl, .f, ...) {
+next_method_keys_track <- function(.data, .f, ...) {
   dots_names <- names(quos(...))
-  id_name <- compute_id_name(c(names(.tbl), dots_names))
+  id_name <- compute_id_name(c(names(.data), dots_names))
 
-  y <- unkey(.tbl)
+  y <- unkey(.data)
   y[[id_name]] <- 1:nrow(y)
   res <- .f(y, ...)
 
@@ -131,7 +131,7 @@ next_method_keys_track <- function(.tbl, .f, ...) {
   # added during `keys<-()` execution.
   id_vals <- res[[id_name]]
   res[[id_name]] <- NULL
-  keys(res) <- keys(.tbl)[id_vals, ]
+  keys(res) <- keys(.data)[id_vals, ]
 
   res
 }
