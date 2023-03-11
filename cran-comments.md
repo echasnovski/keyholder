@@ -1,13 +1,13 @@
 ## Submission details
 
-This submission is reaction to upcoming changes in 'dplyr' 1.0.8.
+This submission is a reaction to CRAN warnings on R-devel.
 
 ## Test environments
 
-* Local Ubuntu 18.04 install, R 4.0.3
-* Debian on R-hub, R development version (2021-12-03 r81290)
-* macOS 10.13.6 on R-hub, R 4.1.1
-* win-builder, release and development version (2021-12-03 r81290)
+* Local EndeavorOS 6.2.2-arch1-1 install, R 4.2.2
+* GitHub Action on x86_64-apple-darwin17.0 (64-bit), release and development version (2023-03-10 r83967)
+* GitHub Action on x86_64-w64-mingw32 (64-bit), release and development version (2023-03-10 r83967 ucrt)
+* win-builder, release and development version (2023-03-10 r83967 ucrt)
 
 ## R CMD check results
 
