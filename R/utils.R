@@ -44,7 +44,7 @@ remove_class_cond <- function(x, class) {
 diff_tbl <- function(.tbl1, .tbl2) {
   not_in_tbl2_idx <- which(!(colnames(.tbl1) %in% colnames(.tbl2)))
 
-  select(.tbl1, not_in_tbl2_idx)
+  select(.tbl1, dplyr::all_of(not_in_tbl2_idx))
 }
 
 assign_tbl <- function(.tbl1, .tbl2) {

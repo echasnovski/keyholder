@@ -38,7 +38,7 @@ get_if_permutation <- function(predicate, tbl, f_at, ...) {
   pred_columns <- names(tbl)[sapply(tbl, predicate)]
   tbl[[".id"]] <- seq_len(nrow(tbl))
 
-  f_at(tbl, vars(pred_columns), ...)[[".id"]]
+  f_at(tbl, pred_columns, ...)[[".id"]]
 }
 
 
