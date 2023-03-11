@@ -10,13 +10,17 @@
 \alias{anti_join.keyed_df}
 \title{Two-table verbs from dplyr for keyed_df}
 \usage{
-\method{inner_join}{keyed_df}(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...)
+\method{inner_join}{keyed_df}(x, y, by = NULL, copy = FALSE,
+  suffix = c(".x", ".y"), ...)
 
-\method{left_join}{keyed_df}(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...)
+\method{left_join}{keyed_df}(x, y, by = NULL, copy = FALSE,
+  suffix = c(".x", ".y"), ...)
 
-\method{right_join}{keyed_df}(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...)
+\method{right_join}{keyed_df}(x, y, by = NULL, copy = FALSE,
+  suffix = c(".x", ".y"), ...)
 
-\method{full_join}{keyed_df}(x, y, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...)
+\method{full_join}{keyed_df}(x, y, by = NULL, copy = FALSE,
+  suffix = c(".x", ".y"), ...)
 
 \method{semi_join}{keyed_df}(x, y, by = NULL, copy = FALSE, ...)
 

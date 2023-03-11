@@ -7,7 +7,8 @@
 \alias{restore_keys_at}
 \title{Restore selection of keys}
 \usage{
-restore_keys_all(.tbl, .funs = list(), ..., .remove = FALSE, .unkey = FALSE)
+restore_keys_all(.tbl, .funs = list(), ..., .remove = FALSE,
+  .unkey = FALSE)
 
 restore_keys_if(.tbl, .predicate, .funs = list(), ..., .remove = FALSE,
   .unkey = FALSE)
