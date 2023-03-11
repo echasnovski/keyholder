@@ -1,4 +1,6 @@
-# keyholder (development version)
+# keyholder 0.1.7
+
+* Reacion to CRAN warnings.
 
 # keyholder 0.1.6
 
