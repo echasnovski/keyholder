@@ -46,29 +46,63 @@ NULL
 
 #' @rdname key-by-scoped
 #' @export
-key_by_all <- function(.tbl, .funs = list(), ...,
-                       .add = FALSE, .exclude = FALSE) {
-  key_by_impl(.tbl = .tbl, .select_f = select_all,
-              .funs = .funs, ...,
-              .add = .add, .exclude = .exclude)
+key_by_all <- function(
+  .tbl,
+  .funs = list(),
+  ...,
+  .add = FALSE,
+  .exclude = FALSE
+) {
+  key_by_impl(
+    .tbl = .tbl,
+    .select_f = select_all,
+    .funs = .funs,
+    ...,
+    .add = .add,
+    .exclude = .exclude
+  )
 }
 
 #' @rdname key-by-scoped
 #' @export
-key_by_if <- function(.tbl, .predicate, .funs = list(), ...,
-                      .add = FALSE, .exclude = FALSE) {
-  key_by_impl(.tbl = .tbl, .select_f = select_if,
-              .predicate = .predicate, .funs = .funs, ...,
-              .add = .add, .exclude = .exclude)
+key_by_if <- function(
+  .tbl,
+  .predicate,
+  .funs = list(),
+  ...,
+  .add = FALSE,
+  .exclude = FALSE
+) {
+  key_by_impl(
+    .tbl = .tbl,
+    .select_f = select_if,
+    .predicate = .predicate,
+    .funs = .funs,
+    ...,
+    .add = .add,
+    .exclude = .exclude
+  )
 }
 
 #' @rdname key-by-scoped
 #' @export
-key_by_at <- function(.tbl, .vars, .funs = list(), ...,
-                      .add = FALSE, .exclude = FALSE) {
-  key_by_impl(.tbl = .tbl, .select_f = select_at,
-              .vars = .vars, .funs = .funs, ...,
-              .add = .add, .exclude = .exclude)
+key_by_at <- function(
+  .tbl,
+  .vars,
+  .funs = list(),
+  ...,
+  .add = FALSE,
+  .exclude = FALSE
+) {
+  key_by_impl(
+    .tbl = .tbl,
+    .select_f = select_at,
+    .vars = .vars,
+    .funs = .funs,
+    ...,
+    .add = .add,
+    .exclude = .exclude
+  )
 }
 
 
@@ -99,30 +133,41 @@ NULL
 #' @export
 remove_keys_all <- function(.tbl, ..., .unkey = FALSE) {
   dots <- dots_remove_elements(..., ".funs")
-  remove_keys_impl(.tbl = .tbl, .select_f = select_all,
-                   .funs = list(), !!! dots, .unkey = .unkey)
+  remove_keys_impl(
+    .tbl = .tbl,
+    .select_f = select_all,
+    .funs = list(),
+    !!!dots,
+    .unkey = .unkey
+  )
 }
 
 #' @rdname remove-keys-scoped
 #' @export
-remove_keys_if <- function(.tbl, .predicate, ...,
-                           .unkey = FALSE) {
+remove_keys_if <- function(.tbl, .predicate, ..., .unkey = FALSE) {
   dots <- dots_remove_elements(..., ".funs")
-  remove_keys_impl(.tbl = .tbl, .select_f = select_if,
-                   .predicate = .predicate, .funs = list(),
-                   !!! dots,
-                   .unkey = .unkey)
+  remove_keys_impl(
+    .tbl = .tbl,
+    .select_f = select_if,
+    .predicate = .predicate,
+    .funs = list(),
+    !!!dots,
+    .unkey = .unkey
+  )
 }
 
 #' @rdname remove-keys-scoped
 #' @export
-remove_keys_at <- function(.tbl, .vars, ...,
-                           .unkey = FALSE) {
+remove_keys_at <- function(.tbl, .vars, ..., .unkey = FALSE) {
   dots <- dots_remove_elements(..., ".funs")
-  remove_keys_impl(.tbl = .tbl, .select_f = select_at,
-                   .vars = .vars, .funs = list(),
-                   !!! dots,
-                   .unkey = .unkey)
+  remove_keys_impl(
+    .tbl = .tbl,
+    .select_f = select_at,
+    .vars = .vars,
+    .funs = list(),
+    !!!dots,
+    .unkey = .unkey
+  )
 }
 
 
@@ -166,11 +211,21 @@ NULL
 
 #' @rdname restore-keys-scoped
 #' @export
-restore_keys_all <- function(.tbl, .funs = list(), ...,
-                             .remove = FALSE, .unkey = FALSE) {
-  res <- restore_keys_impl(.tbl = .tbl, .select_f = select_all,
-                           .funs = .funs, ...,
-                           .remove = FALSE, .unkey = .unkey)
+restore_keys_all <- function(
+  .tbl,
+  .funs = list(),
+  ...,
+  .remove = FALSE,
+  .unkey = FALSE
+) {
+  res <- restore_keys_impl(
+    .tbl = .tbl,
+    .select_f = select_all,
+    .funs = .funs,
+    ...,
+    .remove = FALSE,
+    .unkey = .unkey
+  )
   if (.remove) {
     res <- res %>% remove_keys_all(..., .unkey = .unkey)
   }
@@ -180,14 +235,25 @@ restore_keys_all <- function(.tbl, .funs = list(), ...,
 
 #' @rdname restore-keys-scoped
 #' @export
-restore_keys_if <- function(.tbl, .predicate, .funs = list(), ...,
-                             .remove = FALSE, .unkey = FALSE) {
-  res <- restore_keys_impl(.tbl = .tbl, .select_f = select_if,
-                           .predicate = .predicate, .funs = .funs, ...,
-                           .remove = FALSE, .unkey = .unkey)
+restore_keys_if <- function(
+  .tbl,
+  .predicate,
+  .funs = list(),
+  ...,
+  .remove = FALSE,
+  .unkey = FALSE
+) {
+  res <- restore_keys_impl(
+    .tbl = .tbl,
+    .select_f = select_if,
+    .predicate = .predicate,
+    .funs = .funs,
+    ...,
+    .remove = FALSE,
+    .unkey = .unkey
+  )
   if (.remove) {
-    res <- res %>% remove_keys_if(.predicate = .predicate, ...,
-                                  .unkey = .unkey)
+    res <- res %>% remove_keys_if(.predicate = .predicate, ..., .unkey = .unkey)
   }
 
   res
@@ -195,14 +261,25 @@ restore_keys_if <- function(.tbl, .predicate, .funs = list(), ...,
 
 #' @rdname restore-keys-scoped
 #' @export
-restore_keys_at <- function(.tbl, .vars, .funs = list(), ...,
-                             .remove = FALSE, .unkey = FALSE) {
-  res <- restore_keys_impl(.tbl = .tbl, .select_f = select_at,
-                           .vars = .vars, .funs = .funs, ...,
-                           .remove = FALSE, .unkey = .unkey)
+restore_keys_at <- function(
+  .tbl,
+  .vars,
+  .funs = list(),
+  ...,
+  .remove = FALSE,
+  .unkey = FALSE
+) {
+  res <- restore_keys_impl(
+    .tbl = .tbl,
+    .select_f = select_at,
+    .vars = .vars,
+    .funs = .funs,
+    ...,
+    .remove = FALSE,
+    .unkey = .unkey
+  )
   if (.remove) {
-    res <- res %>% remove_keys_at(.vars = .vars, ...,
-                                  .unkey = .unkey)
+    res <- res %>% remove_keys_at(.vars = .vars, ..., .unkey = .unkey)
   }
 
   res
@@ -223,20 +300,29 @@ NULL
 #' @rdname rename-keys-scoped
 #' @export
 rename_keys_all <- function(.tbl, .funs = list(), ...) {
-  rename_keys_impl(.tbl = .tbl, .rename_f = rename_all,
-                    .funs = .funs, ...)
+  rename_keys_impl(.tbl = .tbl, .rename_f = rename_all, .funs = .funs, ...)
 }
 
 #' @rdname rename-keys-scoped
 #' @export
 rename_keys_if <- function(.tbl, .predicate, .funs = list(), ...) {
-  rename_keys_impl(.tbl = .tbl, .rename_f = rename_if,
-                    .predicate = .predicate, .funs = .funs, ...)
+  rename_keys_impl(
+    .tbl = .tbl,
+    .rename_f = rename_if,
+    .predicate = .predicate,
+    .funs = .funs,
+    ...
+  )
 }
 
 #' @rdname rename-keys-scoped
 #' @export
 rename_keys_at <- function(.tbl, .vars, .funs = list(), ...) {
-  rename_keys_impl(.tbl = .tbl, .rename_f = rename_at,
-                    .vars = .vars, .funs = .funs, ...)
+  rename_keys_impl(
+    .tbl = .tbl,
+    .rename_f = rename_at,
+    .vars = .vars,
+    .funs = .funs,
+    ...
+  )
 }

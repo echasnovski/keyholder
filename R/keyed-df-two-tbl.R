@@ -20,41 +20,85 @@ NULL
 
 #' @rdname keyed-df-two-tbl
 #' @export
-inner_join.keyed_df <- function(x, y, by = NULL, copy = FALSE,
-                                suffix = c(".x", ".y"), ...) {
+inner_join.keyed_df <- function(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  suffix = c(".x", ".y"),
+  ...
+) {
   next_method_keys_two_tbl(
-    x, y, inner_join,
-    by = by, copy = copy, suffix = suffix, ...
+    x,
+    y,
+    inner_join,
+    by = by,
+    copy = copy,
+    suffix = suffix,
+    ...
   )
 }
 
 #' @rdname keyed-df-two-tbl
 #' @export
-left_join.keyed_df <- function(x, y, by = NULL, copy = FALSE,
-                               suffix = c(".x", ".y"), ...) {
+left_join.keyed_df <- function(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  suffix = c(".x", ".y"),
+  ...
+) {
   next_method_keys_two_tbl(
-    x, y, left_join,
-    by = by, copy = copy, suffix = suffix, ...
+    x,
+    y,
+    left_join,
+    by = by,
+    copy = copy,
+    suffix = suffix,
+    ...
   )
 }
 
 #' @rdname keyed-df-two-tbl
 #' @export
-right_join.keyed_df <- function(x, y, by = NULL, copy = FALSE,
-                                suffix = c(".x", ".y"), ...) {
+right_join.keyed_df <- function(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  suffix = c(".x", ".y"),
+  ...
+) {
   next_method_keys_two_tbl(
-    x, y, right_join,
-    by = by, copy = copy, suffix = suffix, ...
+    x,
+    y,
+    right_join,
+    by = by,
+    copy = copy,
+    suffix = suffix,
+    ...
   )
 }
 
 #' @rdname keyed-df-two-tbl
 #' @export
-full_join.keyed_df <- function(x, y, by = NULL, copy = FALSE,
-                               suffix = c(".x", ".y"), ...) {
+full_join.keyed_df <- function(
+  x,
+  y,
+  by = NULL,
+  copy = FALSE,
+  suffix = c(".x", ".y"),
+  ...
+) {
   next_method_keys_two_tbl(
-    x, y, full_join,
-    by = by, copy = copy, suffix = suffix, ...
+    x,
+    y,
+    full_join,
+    by = by,
+    copy = copy,
+    suffix = suffix,
+    ...
   )
 }
 
@@ -62,8 +106,12 @@ full_join.keyed_df <- function(x, y, by = NULL, copy = FALSE,
 #' @export
 semi_join.keyed_df <- function(x, y, by = NULL, copy = FALSE, ...) {
   next_method_keys_two_tbl(
-    x, y, semi_join,
-    by = by, copy = copy, ...
+    x,
+    y,
+    semi_join,
+    by = by,
+    copy = copy,
+    ...
   )
 }
 
@@ -71,8 +119,12 @@ semi_join.keyed_df <- function(x, y, by = NULL, copy = FALSE, ...) {
 #' @export
 anti_join.keyed_df <- function(x, y, by = NULL, copy = FALSE, ...) {
   next_method_keys_two_tbl(
-    x, y, anti_join,
-    by = by, copy = copy, ...
+    x,
+    y,
+    anti_join,
+    by = by,
+    copy = copy,
+    ...
   )
 }
 

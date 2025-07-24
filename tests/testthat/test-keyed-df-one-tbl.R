@@ -202,22 +202,27 @@ test_that("summarise.keyed_df works", {
 
   expect_false(mtcars_df %>% key_by(vs) %>% summarise_f() %>% is_keyed_df())
   expect_false(mtcars_tbl %>% key_by(vs) %>% summarise_f() %>% is_keyed_df())
-  expect_false(mtcars_grouped %>% key_by(vs) %>% summarise_f() %>%
-                 is_keyed_df())
-  expect_false(mtcars_rowwise %>% key_by(vs) %>% summarise_f() %>%
-                 is_keyed_df())
+  expect_false(
+    mtcars_grouped %>% key_by(vs) %>% summarise_f() %>% is_keyed_df()
+  )
+  expect_false(
+    mtcars_rowwise %>% key_by(vs) %>% summarise_f() %>% is_keyed_df()
+  )
 })
 
 test_that("summarise_all works", {
   summarise_all_f <- . %>% summarise_all(list(~ n()))
 
   expect_false(mtcars_df %>% key_by(vs) %>% summarise_all_f() %>% is_keyed_df())
-  expect_false(mtcars_tbl %>% key_by(vs) %>% summarise_all_f() %>%
-                 is_keyed_df())
-  expect_false(mtcars_grouped %>% key_by(vs) %>% summarise_all_f() %>%
-                 is_keyed_df())
-  expect_false(mtcars_rowwise %>% key_by(vs) %>% summarise_all_f() %>%
-                 is_keyed_df())
+  expect_false(
+    mtcars_tbl %>% key_by(vs) %>% summarise_all_f() %>% is_keyed_df()
+  )
+  expect_false(
+    mtcars_grouped %>% key_by(vs) %>% summarise_all_f() %>% is_keyed_df()
+  )
+  expect_false(
+    mtcars_rowwise %>% key_by(vs) %>% summarise_all_f() %>% is_keyed_df()
+  )
 })
 
 test_that("summarise_if works", {
@@ -225,10 +230,12 @@ test_that("summarise_if works", {
 
   expect_false(mtcars_df %>% key_by(vs) %>% summarise_if_f() %>% is_keyed_df())
   expect_false(mtcars_tbl %>% key_by(vs) %>% summarise_if_f() %>% is_keyed_df())
-  expect_false(mtcars_grouped %>% key_by(vs) %>% summarise_if_f() %>%
-                 is_keyed_df())
-  expect_false(mtcars_rowwise %>% key_by(vs) %>% summarise_if_f() %>%
-                 is_keyed_df())
+  expect_false(
+    mtcars_grouped %>% key_by(vs) %>% summarise_if_f() %>% is_keyed_df()
+  )
+  expect_false(
+    mtcars_rowwise %>% key_by(vs) %>% summarise_if_f() %>% is_keyed_df()
+  )
 })
 
 test_that("summarise_at works", {
@@ -236,10 +243,12 @@ test_that("summarise_at works", {
 
   expect_false(mtcars_df %>% key_by(vs) %>% summarise_at_f() %>% is_keyed_df())
   expect_false(mtcars_tbl %>% key_by(vs) %>% summarise_at_f() %>% is_keyed_df())
-  expect_false(mtcars_grouped %>% key_by(vs) %>% summarise_at_f() %>%
-                 is_keyed_df())
-  expect_false(mtcars_rowwise %>% key_by(vs) %>% summarise_at_f() %>%
-                 is_keyed_df())
+  expect_false(
+    mtcars_grouped %>% key_by(vs) %>% summarise_at_f() %>% is_keyed_df()
+  )
+  expect_false(
+    mtcars_rowwise %>% key_by(vs) %>% summarise_at_f() %>% is_keyed_df()
+  )
 })
 
 
@@ -297,16 +306,19 @@ test_that("rowwise.keyed_df works", {
 
 # distinct ----------------------------------------------------------------
 test_that("distinct works", {
-  expect_false(mtcars_df %>% key_by(vs, am) %>% distinct(hp) %>%
-                 is_keyed_df())
+  expect_false(mtcars_df %>% key_by(vs, am) %>% distinct(hp) %>% is_keyed_df())
 })
 
 
 # do ----------------------------------------------------------------------
 test_that("do works", {
   expect_false(
-    mtcars %>% key_by(vs, am) %>% group_by(gear) %>%
-      do({summarise(., meanMPG = mean(mpg))}) %>%
+    mtcars %>%
+      key_by(vs, am) %>%
+      group_by(gear) %>%
+      do({
+        summarise(., meanMPG = mean(mpg))
+      }) %>%
       is_keyed_df()
   )
 })
@@ -327,10 +339,12 @@ test_that("arrange.keyed_df works", {
 
   arrange_f_by_group <- . %>% arrange(vs, desc(mpg), .by_group = TRUE)
   assign_perm_keys_by_group <- assigning_ref_keys(
-    arrange_f_by_group, mtcars_grouped
+    arrange_f_by_group,
+    mtcars_grouped
   )
 
-  output_1_f_by_group <- . %>% arrange_f_by_group() %>%
+  output_1_f_by_group <- . %>%
+    arrange_f_by_group() %>%
     assign_perm_keys_by_group()
   output_2_f_by_group <- . %>% assign_keys_mtcars() %>% arrange_f_by_group()
 
@@ -362,7 +376,9 @@ test_that("arrange_if works", {
   permutation <- get_if_permutation(rlang::is_integerish, mtcars_df, arrange_at)
   assign_perm_keys <- . %>% assign_keys(keys_mtcars[permutation, ])
   permutation_gr <- get_if_permutation(
-    rlang::is_integerish, mtcars_grouped, arrange_at
+    rlang::is_integerish,
+    mtcars_grouped,
+    arrange_at
   )
   assign_perm_keys_gr <- . %>% assign_keys(keys_mtcars[permutation_gr, ])
 
@@ -430,11 +446,17 @@ test_that("filter_if works", {
   filter_if_f <- . %>% filter_if(rlang::is_integerish, all_vars(. < 100))
 
   permutation <- get_if_permutation(
-    rlang::is_integerish, mtcars_df, filter_at, all_vars(. < 100)
+    rlang::is_integerish,
+    mtcars_df,
+    filter_at,
+    all_vars(. < 100)
   )
   assign_perm_keys <- . %>% assign_keys(keys_mtcars[permutation, ])
   permutation_gr <- get_if_permutation(
-    rlang::is_integerish, mtcars_grouped, filter_at, all_vars(. < 100)
+    rlang::is_integerish,
+    mtcars_grouped,
+    filter_at,
+    all_vars(. < 100)
   )
   assign_perm_keys_gr <- . %>% assign_keys(keys_mtcars[permutation_gr, ])
 
@@ -490,7 +512,8 @@ test_that("slice.keyed_df works", {
   expect_identical(output_1_f_gr(mtcars_grouped), output_2_f(mtcars_grouped))
   # Slicing rowwise_df is done as if every row is a single-element group
   expect_identical(
-    output_1_f_rowwise(mtcars_rowwise), output_1_f_rowwise(mtcars_rowwise)
+    output_1_f_rowwise(mtcars_rowwise),
+    output_1_f_rowwise(mtcars_rowwise)
   )
 })
 

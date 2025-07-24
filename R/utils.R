@@ -48,7 +48,7 @@ diff_tbl <- function(.tbl1, .tbl2) {
 }
 
 assign_tbl <- function(.tbl1, .tbl2) {
-  .tbl1[, colnames(.tbl2)] <- .tbl2[, ]
+  .tbl1[, colnames(.tbl2)] <- .tbl2[,]
 
   .tbl1
 }

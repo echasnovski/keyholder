@@ -71,16 +71,24 @@ test_that("restore_keys.default handles .remove and .unkey arguments", {
 
   expect_identical(output_2, output_ref_2)
 
-  output_3 <- restore_keys(df_keyed, everything(),
-                           .remove = FALSE, .unkey = TRUE)
+  output_3 <- restore_keys(
+    df_keyed,
+    everything(),
+    .remove = FALSE,
+    .unkey = TRUE
+  )
   output_ref_3 <- df_keyed
   output_ref_3$vs <- df$vs
   output_ref_3$am <- df$am
 
   expect_identical(output_3, output_ref_3)
 
-  output_4 <- restore_keys(df_keyed, everything(),
-                           .remove = TRUE, .unkey = TRUE)
+  output_4 <- restore_keys(
+    df_keyed,
+    everything(),
+    .remove = TRUE,
+    .unkey = TRUE
+  )
 
   expect_identical(output_4, df)
 })
@@ -92,8 +100,12 @@ test_that("restore_keys.default preserves class", {
 
   expect_equal(class(output_1), c("keyed_df", "data.frame"))
 
-  output_2 <- restore_keys(df_keyed_1, everything(),
-                           .remove = TRUE, .unkey = TRUE)
+  output_2 <- restore_keys(
+    df_keyed_1,
+    everything(),
+    .remove = TRUE,
+    .unkey = TRUE
+  )
 
   expect_equal(class(output_2), "data.frame")
 
@@ -103,8 +115,12 @@ test_that("restore_keys.default preserves class", {
 
   expect_equal(class(output_3), c("keyed_df", "tbl_df", "tbl", "data.frame"))
 
-  output_4 <- restore_keys(df_keyed_2, everything(),
-                           .remove = TRUE, .unkey = TRUE)
+  output_4 <- restore_keys(
+    df_keyed_2,
+    everything(),
+    .remove = TRUE,
+    .unkey = TRUE
+  )
 
   expect_equal(class(output_4), c("tbl_df", "tbl", "data.frame"))
 })

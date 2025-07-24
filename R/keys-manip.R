@@ -80,15 +80,20 @@ restore_keys <- function(.tbl, ..., .remove = FALSE, .unkey = FALSE) {
 
 #' @export
 restore_keys.default <- function(.tbl, ..., .remove = FALSE, .unkey = FALSE) {
-  restore_keys_impl(.tbl = .tbl, .select_f = select, ...,
-                    .remove = .remove, .unkey = .unkey)
+  restore_keys_impl(
+    .tbl = .tbl,
+    .select_f = select,
+    ...,
+    .remove = .remove,
+    .unkey = .unkey
+  )
 }
 
 #' @rdname keys-manipulate
 #' @export
 pull_key <- function(.tbl, var) {
   if (has_keys(.tbl)) {
-    pull(keys(.tbl), !! rlang::enquo(var))
+    pull(keys(.tbl), !!rlang::enquo(var))
   } else {
     stop("Input has no keys to pull from.")
   }
@@ -112,8 +117,13 @@ remove_keys_impl <- function(.tbl, .select_f, ..., .unkey = FALSE) {
   set_key_cond(.tbl, left_keys, .unkey)
 }
 
-restore_keys_impl <- function(.tbl, .select_f, ...,
-                              .remove = FALSE, .unkey = FALSE) {
+restore_keys_impl <- function(
+  .tbl,
+  .select_f,
+  ...,
+  .remove = FALSE,
+  .unkey = FALSE
+) {
   tbl_keys <- keys(.tbl)
   tbl_class <- class(.tbl)
 

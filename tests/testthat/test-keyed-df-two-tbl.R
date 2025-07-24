@@ -29,12 +29,15 @@ expect_commute_with_keys <- function(input, .f, type = "identical") {
   expect_commute(input = input, .f1 = .f, .f2 = assign_keys_band, type = type)
 }
 
-get_assign_permuted_keys <- function(.tbl = band_members_df, .f,
-                                     base_keys = keys_band,
-                                     tbl_groups = list()) {
+get_assign_permuted_keys <- function(
+  .tbl = band_members_df,
+  .f,
+  base_keys = keys_band,
+  tbl_groups = list()
+) {
   permutation <- .tbl %>%
     mutate(.id = 1:n()) %>%
-    group_by(!!! tbl_groups) %>%
+    group_by(!!!tbl_groups) %>%
     .f() %>%
     pull(.id)
 
@@ -52,10 +55,14 @@ test_that("inner_join.keyed_df works", {
 
   expect_identical(output_1_f(band_members_df), output_2_f(band_members_df))
   expect_identical(output_1_f(band_members_tbl), output_2_f(band_members_tbl))
-  expect_identical(output_1_f(band_members_grouped),
-                   output_2_f(band_members_grouped))
-  expect_identical(output_1_f(band_members_rowwise),
-                   output_2_f(band_members_rowwise))
+  expect_identical(
+    output_1_f(band_members_grouped),
+    output_2_f(band_members_grouped)
+  )
+  expect_identical(
+    output_1_f(band_members_rowwise),
+    output_2_f(band_members_rowwise)
+  )
 })
 
 
@@ -69,10 +76,14 @@ test_that("left_join.keyed_df works", {
 
   expect_identical(output_1_f(band_members_df), output_2_f(band_members_df))
   expect_identical(output_1_f(band_members_tbl), output_2_f(band_members_tbl))
-  expect_identical(output_1_f(band_members_grouped),
-                   output_2_f(band_members_grouped))
-  expect_identical(output_1_f(band_members_rowwise),
-                   output_2_f(band_members_rowwise))
+  expect_identical(
+    output_1_f(band_members_grouped),
+    output_2_f(band_members_grouped)
+  )
+  expect_identical(
+    output_1_f(band_members_rowwise),
+    output_2_f(band_members_rowwise)
+  )
 })
 
 
@@ -86,10 +97,14 @@ test_that("right_join.keyed_df works", {
 
   expect_identical(output_1_f(band_members_df), output_2_f(band_members_df))
   expect_identical(output_1_f(band_members_tbl), output_2_f(band_members_tbl))
-  expect_identical(output_1_f(band_members_grouped),
-                   output_2_f(band_members_grouped))
-  expect_identical(output_1_f(band_members_rowwise),
-                   output_2_f(band_members_rowwise))
+  expect_identical(
+    output_1_f(band_members_grouped),
+    output_2_f(band_members_grouped)
+  )
+  expect_identical(
+    output_1_f(band_members_rowwise),
+    output_2_f(band_members_rowwise)
+  )
 })
 
 
@@ -103,10 +118,14 @@ test_that("full_join.keyed_df works", {
 
   expect_identical(output_1_f(band_members_df), output_2_f(band_members_df))
   expect_identical(output_1_f(band_members_tbl), output_2_f(band_members_tbl))
-  expect_identical(output_1_f(band_members_grouped),
-                   output_2_f(band_members_grouped))
-  expect_identical(output_1_f(band_members_rowwise),
-                   output_2_f(band_members_rowwise))
+  expect_identical(
+    output_1_f(band_members_grouped),
+    output_2_f(band_members_grouped)
+  )
+  expect_identical(
+    output_1_f(band_members_rowwise),
+    output_2_f(band_members_rowwise)
+  )
 })
 
 
@@ -120,10 +139,14 @@ test_that("semi_join.keyed_df works", {
 
   expect_identical(output_1_f(band_members_df), output_2_f(band_members_df))
   expect_identical(output_1_f(band_members_tbl), output_2_f(band_members_tbl))
-  expect_identical(output_1_f(band_members_grouped),
-                   output_2_f(band_members_grouped))
-  expect_identical(output_1_f(band_members_rowwise),
-                   output_2_f(band_members_rowwise))
+  expect_identical(
+    output_1_f(band_members_grouped),
+    output_2_f(band_members_grouped)
+  )
+  expect_identical(
+    output_1_f(band_members_rowwise),
+    output_2_f(band_members_rowwise)
+  )
 })
 
 
@@ -137,8 +160,12 @@ test_that("anti_join.keyed_df works", {
 
   expect_identical(output_1_f(band_members_df), output_2_f(band_members_df))
   expect_identical(output_1_f(band_members_tbl), output_2_f(band_members_tbl))
-  expect_identical(output_1_f(band_members_grouped),
-                   output_2_f(band_members_grouped))
-  expect_identical(output_1_f(band_members_rowwise),
-                   output_2_f(band_members_rowwise))
+  expect_identical(
+    output_1_f(band_members_grouped),
+    output_2_f(band_members_grouped)
+  )
+  expect_identical(
+    output_1_f(band_members_rowwise),
+    output_2_f(band_members_rowwise)
+  )
 })

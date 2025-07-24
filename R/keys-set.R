@@ -94,8 +94,13 @@ key_by <- function(.tbl, ..., .add = FALSE, .exclude = FALSE) {
 
 #' @export
 key_by.default <- function(.tbl, ..., .add = FALSE, .exclude = FALSE) {
-  key_by_impl(.tbl = .tbl, .select_f = select, ...,
-              .add = .add, .exclude = .exclude)
+  key_by_impl(
+    .tbl = .tbl,
+    .select_f = select,
+    ...,
+    .add = .add,
+    .exclude = .exclude
+  )
 }
 
 key_by_impl <- function(.tbl, .select_f, ..., .add = FALSE, .exclude = FALSE) {

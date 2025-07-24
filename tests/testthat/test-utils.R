@@ -8,13 +8,13 @@ df <- mtcars
 # dots_remove_elements ----------------------------------------------------
 test_that("dots_remove_elements works", {
   input <- list(a = 1, b = "b", c = TRUE, x = quo(x), 1.3)
-  output_1 <- dots_remove_elements(!!! input)
-  output_ref_1 <- quos(!!! input)
+  output_1 <- dots_remove_elements(!!!input)
+  output_ref_1 <- quos(!!!input)
 
   expect_identical(output_1, output_ref_1)
 
-  output_2 <- dots_remove_elements(!!! input, .elements = c("a", "x"))
-  output_ref_2 <- quos(!!! input)[c(2, 3, 5)]
+  output_2 <- dots_remove_elements(!!!input, .elements = c("a", "x"))
+  output_ref_2 <- quos(!!!input)[c(2, 3, 5)]
 
   expect_identical(output_2, output_ref_2)
 })
@@ -46,8 +46,7 @@ test_that("remove_class_cond works", {
   class(df) <- c("some", "data.frame")
 
   expect_equal(class(remove_class_cond(df, "some")), "data.frame")
-  expect_equal(class(remove_class_cond(df, "another")),
-               c("some", "data.frame"))
+  expect_equal(class(remove_class_cond(df, "another")), c("some", "data.frame"))
 })
 
 
@@ -79,8 +78,12 @@ test_that("assign_tbl works", {
   df_1 <- data.frame(y = 2:11, x = 1:10)
   df_2 <- data.frame(y = 3:12, z = letters[1:10], stringsAsFactors = FALSE)
   output <- assign_tbl(df_1, df_2)
-  output_ref <- data.frame(y = df_2$y, x = df_1$x, z = df_2$z,
-                           stringsAsFactors = FALSE)
+  output_ref <- data.frame(
+    y = df_2$y,
+    x = df_1$x,
+    z = df_2$z,
+    stringsAsFactors = FALSE
+  )
 
   expect_identical(output, output_ref)
 })
@@ -96,8 +99,12 @@ test_that("assign_tbl preserves class of .tbl1", {
   df_3 <- data.frame(y = 2:11, x = 1:10)
   df_4 <- tibble(y = 3:12, z = letters[1:10])
   output_2 <- assign_tbl(df_3, df_4)
-  output_ref_2 <- data.frame(y = df_4$y, x = df_3$x, z = df_4$z,
-                             stringsAsFactors = FALSE)
+  output_ref_2 <- data.frame(
+    y = df_4$y,
+    x = df_3$x,
+    z = df_4$z,
+    stringsAsFactors = FALSE
+  )
 
   expect_identical(output_2, output_ref_2)
 })

@@ -13,8 +13,10 @@ test_that("use_id works", {
 
 # compute_id_name ---------------------------------------------------------
 test_that("compute_id_name works", {
-  expect_equal(compute_id_name(c("id", ".ID", "_id", "a.id", "..id", ".id12")),
-               ".id")
+  expect_equal(
+    compute_id_name(c("id", ".ID", "_id", "a.id", "..id", ".id12")),
+    ".id"
+  )
   expect_equal(compute_id_name(c(".id")), ".id1")
   expect_equal(compute_id_name(c(".id1")), ".id")
   expect_equal(compute_id_name(c(".id11")), ".id")
@@ -91,7 +93,6 @@ test_that("key_by_id works on grouped_df", {
   expect_equal(colnames(output_1), colnames(output_ref_1))
   expect_equal(keys(output_1), keys(output_ref_1))
 
-
   input_2 <- as_tibble(mtcars)
   output_2 <- input_2 %>% group_by(vs, am) %>% key_by_id()
   output_ref_2 <- input_2
@@ -148,4 +149,3 @@ test_that("key_by_id handles .add and .exclude arguments", {
 
   expect_identical(output_4, output_ref_4)
 })
-
