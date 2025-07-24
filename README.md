@@ -6,7 +6,7 @@
 [![R build
 status](https://github.com/echasnovski/keyholder/workflows/R-CMD-check/badge.svg)](https://github.com/echasnovski/keyholder/actions)
 [![Coverage
-Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://codecov.io/github/echasnovski/keyholder?branch=master)
+Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://app.codecov.io/gh/echasnovski/keyholder)
 [![CRAN](https://www.r-pkg.org/badges/version/keyholder?color=blue)](https://cran.r-project.org/package=keyholder)
 [![Dependencies](https://tinyverse.netlify.com/badge/keyholder)](https://CRAN.R-project.org/package=keyholder)
 [![Downloads](http://cranlogs.r-pkg.org/badges/keyholder)](https://cran.r-project.org/package=keyholder)
