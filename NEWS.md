@@ -1,4 +1,6 @@
-# keyholder (development version)
+# keyholder 0.1.8
+
+* Reaction to CRAN notes.
 
 # keyholder 0.1.7
 
