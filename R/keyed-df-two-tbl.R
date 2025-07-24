@@ -1,6 +1,6 @@
 #' Two-table verbs from dplyr for keyed_df
 #'
-#' Defined methods for [dplyr] generic [join][dplyr::join] functions. All of
+#' Defined methods for `dplyr` generic [join][dplyr::join] functions. All of
 #' them preserve 'keyed_df' class and 'keys' attribute __of the first
 #' argument__. Also these methods modify rows in keys according to the rows
 #' modification in first argument (if any).

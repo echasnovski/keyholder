@@ -53,7 +53,7 @@
 \item{.by_group}{Parameter for \link[dplyr:arrange]{dplyr::arrange}.}
 }
 \description{
-Defined methods for \link{dplyr} generic single table functions. Most of them
+Defined methods for \code{dplyr} generic single table functions. Most of them
 preserve 'keyed_df' class and 'keys' attribute (excluding \code{summarise} with
 scoped variants, \code{distinct} and \code{do} which remove them). Also these methods
 modify rows in keys according to the rows modification in reference
