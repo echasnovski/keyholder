@@ -3,8 +3,6 @@
 
 <!-- badges: start -->
 
-[![Travis-CI Build
-Status](https://travis-ci.org/echasnovski/keyholder.svg?branch=master)](https://travis-ci.org/echasnovski/keyholder)
 [![R build
 status](https://github.com/echasnovski/keyholder/workflows/R-CMD-check/badge.svg)](https://github.com/echasnovski/keyholder/actions)
 [![Coverage
@@ -17,7 +15,7 @@ Status](https://codecov.io/gh/echasnovski/keyholder/graph/badge.svg)](https://co
 `keyholder` is a package for storing information (*keys*) about rows of
 data frame like objects. The common use cases are to track rows of data
 without modifying it and to backup and restore information about rows.
-This is done with creating a class **keyed\_df** which has special
+This is done with creating a class **keyed_df** which has special
 attribute “keys”. Keys are updated according to changes in rows of
 reference data frame.
 
@@ -44,14 +42,14 @@ devtools::install_github("echasnovski/keyholder")
 
 `keyholder` provides a set of functions to work with keys:
 
--   Set keys with `assign_keys()` and `key_by()`.
--   Get all keys with `keys()`. Get one specific key with `pull_key()`.
--   Restore information stored in certain keys with `restore_keys()` and
-    its scoped variants (`*_all()`, `*_if()` and `*_at()`).
--   Rename certain keys with `rename_keys()` and its scoped variants.
--   Remove certain keys with `remove_keys()` and its scoped variants.
-    Completely unkey object with `unkey()`.
--   Track rows with `use_id()` and special `.id` key.
+- Set keys with `assign_keys()` and `key_by()`.
+- Get all keys with `keys()`. Get one specific key with `pull_key()`.
+- Restore information stored in certain keys with `restore_keys()` and
+  its scoped variants (`*_all()`, `*_if()` and `*_at()`).
+- Rename certain keys with `rename_keys()` and its scoped variants.
+- Remove certain keys with `remove_keys()` and its scoped variants.
+  Completely unkey object with `unkey()`.
+- Track rows with `use_id()` and special `.id` key.
 
 For more detailed explanations and examples see package vignettes and
 documentation.
@@ -64,7 +62,7 @@ library(keyholder)
 mtcars_tbl <- mtcars %>% as_tibble()
 ```
 
--   Track rows without modifying data:
+- Track rows without modifying data:
 
 ``` r
 mtcars_tbl_id <- mtcars_tbl %>%
@@ -80,13 +78,13 @@ mtcars_tbl_id
 #> 1  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
 #> 2  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
 #> 3  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
-#> # … with 7 more rows
+#> # ℹ 7 more rows
 
 mtcars_tbl_id %>% pull_key(.id)
 #>  [1]  3  8  9 10 11 18 19 20 26 32
 ```
 
--   Backup and restore information:
+- Backup and restore information:
 
 ``` r
 mtcars_tbl_keyed <- mtcars_tbl %>%
@@ -123,11 +121,11 @@ mtcars_tbl_keyed %>%
 #> 1  21       6   160   110  3.9   2.62  16.5     1     1     5     4      0
 #> 2  21       6   160   110  3.9   2.88  17.0     1     1     5     4      0
 #> 3  22.8     4   108    93  3.85  2.32  18.6     1     1     5     1      1
-#> # … with 29 more rows
+#> # ℹ 29 more rows
 ```
 
--   As a special case of previous usage one can also hide columns for
-    convenient use of `dplyr`’s \*\_if scoped variants of verbs:
+- As a special case of previous usage one can also hide columns for
+  convenient use of `dplyr`’s \*\_if scoped variants of verbs:
 
 ``` r
 # Restored key goes to the end of the tibble
@@ -142,5 +140,5 @@ mtcars_tbl %>%
 #> 1     6   160   110     4     3    16     0     1     4     4  21  
 #> 2     6   160   110     4     3    17     0     1     4     4  21  
 #> 3     4   108    93     4     2    19     1     1     4     1  22.8
-#> # … with 29 more rows
+#> # ℹ 29 more rows
 ```
